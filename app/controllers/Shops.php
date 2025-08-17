@@ -49,6 +49,7 @@ class Shops extends Controller
             'rows1' => $data1,
             'rows' => $data,
             'crumbs' => $crumbs,
+            'pager' => $pager,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
             'link' => $link
@@ -65,16 +66,19 @@ class Shops extends Controller
         $data = array();
 
         $shops = new Shop();
+        $wallets = new Wallet();
 
         if (count($_POST) > 0) {
             if ($shops->validate($_POST)) {
                 $years = $_POST['years'];
+                $_POST['startdate'] = date('Y-m-d');
                 $date = date_create($_POST['startdate']);
                 date_add($date, date_interval_create_from_date_string("$years years"));
                 $_POST['enddate'] = date_format($date, "Y-m-d");
                 $_POST['shopid'] = generateRandomCode(55);
 
                 $shops->insert($_POST);
+                $wallets->insert($_POST);
 
                 $_SESSION['messsage'] = "Shop Added Successfully";
                 $_SESSION['status_code'] = "success";
@@ -165,6 +169,104 @@ class Shops extends Controller
         $crumbs  = array();
         $this->view('shop/assign', [
             'row' => $data,
+            'crumbs' => $crumbs,
+            'hiddenSearch' => $hiddenSearch,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
+
+    function expire()
+    {
+        if (!Auth::logged_in()) {
+            $this->redirect('login');
+        }
+
+        // Setting pagination
+        $limit = 15;
+        $pager = new Pager($limit);
+        $offset = $pager->offset;
+
+        $data = array();
+
+        $shops = new Shop();
+
+        $data = $shops->where_query("SELECT * FROM `shops` WHERE `enddate` <=:enddate LIMIT $limit OFFSET $offset", [
+            'enddate' => date("Y-m-d")
+        ]);
+
+        $actives = 'shops';
+        $link = 'expire';
+        $hiddenSearch  = '';
+        $crumbs  = array();
+        $this->view('shop/expire', [
+            'rows' => $data,
+            'crumbs' => $crumbs,
+            'hiddenSearch' => $hiddenSearch,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
+
+    function wallet($id)
+    {
+        if (!Auth::logged_in()) {
+            $this->redirect('login');
+        }
+
+        // Setting pagination
+        $limit = 5;
+        $pager = new Pager($limit);
+        $offset = $pager->offset;
+
+        $data = array();
+        $walletdata = array();
+
+        $shops = new Shop();
+        $wallets = new Wallet();
+
+
+        if (count($_POST) > 0) {
+
+            if (isset($_POST['del'])) {
+
+                $wallets->delete($_POST['del']);
+
+                $_SESSION['messsage'] = "Shop Record Deleted Successfully";
+                $_SESSION['status_code'] = "success";
+                $_SESSION['status_headen'] = "Good job!";
+            } else {
+                $_POST['shopid'] = $id;
+
+                $years = $_POST['years'];
+                $_POST['startdate'] = date('Y-m-d');
+                $date = date_create($_POST['startdate']);
+                date_add($date, date_interval_create_from_date_string("$years years"));
+                $_POST['enddate'] = date_format($date, "Y-m-d");
+                $_POST['status'] = 0;
+
+                $shops->update($id, $_POST, 'shopid');
+                $wallets->insert($_POST);
+
+                $_SESSION['messsage'] = "Shop Wallet Updated Successfully";
+                $_SESSION['status_code'] = "success";
+                $_SESSION['status_headen'] = "Good job!";
+            }
+
+            return $this->redirect('shops/wallet/' . $id);
+        }
+
+        $data = $shops->where('shopid', $id)[0];
+        $walletdata = $wallets->where('shopid', $id, $limit, $offset, 'DESC');
+
+        $actives = 'shops';
+        $link = 'shoplist';
+        $hiddenSearch  = '';
+        $crumbs  = array();
+        $this->view('shop/wallet', [
+            'row' => $data,
+            'rows' => $walletdata,
+            'pager' => $pager,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,

@@ -63,7 +63,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= HOME ?>/components/buttons.html">
+                                <a href="<?= HOME ?>/shops/expire">
                                     <span class="sub-item">Expire Shops</span>
                                 </a>
                             </li>
@@ -181,7 +181,7 @@
                     </div>
                 </li>
                 <li class="nav-item <?= $actives == 'suppliers' ? 'active submenu' : '' ?>">
-                    <?php if (Auth::access('Super Admin') && !Auth::access('developer')): ?>
+                    <?php if (Auth::access('Admin') && !Auth::access('developer')): ?>
                         <a data-bs-toggle="collapse" href="#charts">
                             <i class="fas fa-bars"></i>
                             <p>Manage Supplyers</p>

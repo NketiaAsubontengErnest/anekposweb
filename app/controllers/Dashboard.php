@@ -36,7 +36,9 @@ class Dashboard extends Controller
 
         $arr = [];
 
-        $shops->query("UPDATE `shops` SET `status`= 1 WHERE `enddate` <= CURRENT_DATE");
+        $shops->query("UPDATE `shops` SET `status`= 1 WHERE `enddate` <= :current", [
+            'current' => date('Y-m-d')
+        ]);
 
         if (Auth::getRank() == 'developer') {
             $data['shops'] = $shops->where('status', 1);

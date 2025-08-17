@@ -67,19 +67,9 @@
                                                         <code><?= $errors['shopname'] ?></code>
                                                     <?php endif; ?>
                                                 </div>
-                                                
-                                                <div class="form-group">
-                                                    <label for="quantity">Start Date</label>
-                                                    <input name="startdate"
-                                                        type="date"
-                                                        class="form-control"
-                                                        id="startdate"
-                                                        placeholder="20" />
-                                                    <?php if (isset($errors['startdate'])) : ?>
-                                                        <code><?= $errors['startdate'] ?></code>
-                                                    <?php endif; ?>
-                                                </div>
+
                                             </div>
+
 
                                             <div class="col-md-6 col-lg-4">
                                                 <div class="form-group">
@@ -105,18 +95,21 @@
                                                         <code><?= $errors['email'] ?></code>
                                                     <?php endif; ?>
                                                 </div>
-
+                                                <hr>
                                                 <div class="form-group">
                                                     <label for="quantity">Number of Year(s)</label>
-                                                    <input name="years"
-                                                        type="number"
-                                                        class="form-control"
-                                                        id="years"
-                                                        placeholder="20" />
+                                                    <select name="years" class="form-select form-control-lg" id="largeSelect">
+                                                        <option value="1">1 Year</option>
+                                                        <option value="2">2 Years</option>
+                                                        <option value="3">3 Years</option>
+                                                        <option value="4">5 Years</option>
+                                                    </select>
                                                     <?php if (isset($errors['years'])) : ?>
                                                         <code><?= $errors['years'] ?></code>
                                                     <?php endif; ?>
                                                 </div>
+
+
                                             </div>
 
                                             <div class="col-md-6 col-lg-4">
@@ -131,7 +124,7 @@
                                                         <code><?= $errors['phone'] ?></code>
                                                     <?php endif; ?>
                                                 </div>
-                                                
+
                                                 <div class="form-group">
                                                     <label for="cost_price">Initials</label>
                                                     <input name="initials"

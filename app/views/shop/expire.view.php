@@ -30,7 +30,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Shops List</a>
+                                <a href="#">Expire Shops List</a>
                             </li>
                         </ul>
                     </div>
@@ -41,7 +41,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Shops List</h4>
+                                        <h4 class="card-title">Expire Shops List</h4>
                                         <a href="<?= HOME ?>/shops/add"
                                             class="btn btn-primary btn-round ms-auto">
                                             <i class="fa fa-plus"></i>
@@ -71,11 +71,7 @@
                                                 <?php if ($rows): ?>
                                                     <?php foreach ($rows as $shop): ?>
                                                         <tr>
-                                                            <td>
-                                                                <a href="<?= HOME ?>/shops/wallet/<?= esc($shop->shopid) ?>">
-                                                                    <?= esc($shop->shopname) ?>
-                                                                </a>
-                                                            </td>
+                                                            <td><?= esc($shop->shopname) ?></td>
                                                             <td><?= esc($shop->location) ?></td>
                                                             <td><?= esc($shop->phone) ?></td>
                                                             <td><?= esc($shop->startdate) ?></td>
@@ -84,33 +80,14 @@
                                                             <td><?= esc($shop->status == 0 ? 'Active' : 'In-Active') ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/shops/edit/<?= esc($shop->shopid) ?>"
+                                                                    <a href="<?= HOME ?>/shops/wallet/<?= esc($shop->shopid) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""
                                                                         class="btn btn-link btn-primary btn-lg"
                                                                         data-original-title="Edit Task">
-                                                                        <i class="fa fa-edit"></i>
+                                                                        <i class="fa fa-wallet"></i>
                                                                     </a>
-                                                                    <a href="<?= HOME ?>/shops/assign/<?= esc($shop->shopid) ?>"
-                                                                        type="button"
-                                                                        data-bs-toggle="tooltip"
-                                                                        title=""
-                                                                        class="btn btn-link btn-success btn-lg"
-                                                                        data-original-title="Edit Task">
-                                                                        <i class="fa fa-user-plus"></i>
-                                                                    </a>
-                                                                    <form action="" method="post">
-                                                                        <button
-                                                                            name="del"
-                                                                            value="<?= esc($shop->shopid) ?>"
-                                                                            data-bs-toggle="tooltip"
-                                                                            title=""
-                                                                            class="btn btn-link btn-danger"
-                                                                            data-original-title="Remove">
-                                                                            <i class="fa fa-times"></i>
-                                                                        </button>
-                                                                    </form>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -123,7 +100,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <?php $pager->display($rows ? count($rows) : 0); ?>
                                 </div>
                             </div>
                         </div>
