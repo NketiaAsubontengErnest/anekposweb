@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h4 class="card-title">Customer Debt</h4>
+                        <h4 class="card-title">Supplyer Debt</h4>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="/dashboard">
@@ -24,26 +24,27 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Customers</a>
+                                <a href="#">Supplyer</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
                             </li>
                         </ul>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-header d-flex align-items-center justify-content-between">
                                         <?php if ($row): ?>
-                                            <h4 class="fw-bold mb-3"><?= esc($row->custname . ', ' .  $row->custlocation . ' - ' . $row->custphone) ?> Debts</h4>
-                                            <h2 class="ms-auto">Total: GHC <?= esc($row->customer_total_debt->total_debt - $row->customer_total_pay->total_pay) ?></h2>
+                                            <h4 class="fw-bold mb-3"><?= esc($row->suplname . ', ' .  $row->supllocation . ' - ' . $row->suplphone) ?> Debts</h4>
+                                            <h2 class="ms-auto">Total: GHC <?= esc($row->supplyer_total_debt->total_debt - $row->supplyer_total_pay->total_pay) ?></h2>
                                         <?php else: ?>
-                                            <h4 class="fw-bold mb-3">Customers Debts</h4>
+                                            <h4 class="fw-bold mb-3">Supplyer Debts</h4>
                                         <?php endif; ?>
                                         <div class="form-button-action">
-                                            <a href="<?= HOME ?>/customers/paydebt/<?= esc($rows[0]->id) ?>?invoice=<?= esc($rows[0]->invoicenum) ?>&custid=<?= esc($rows[0]->custid) ?>"
+                                            <a href="<?= HOME ?>/suppliers/paydebt/<?= esc($rows[0]->id) ?>?invoice=<?= esc($rows[0]->invoicenum) ?>&suplid=<?= esc($rows[0]->suplid) ?>"
                                                 type="button"
                                                 data-bs-toggle="tooltip"
                                                 title=""
@@ -53,7 +54,6 @@
                                             </a>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="card-body">
                                     <!-- Modal -->
@@ -72,7 +72,7 @@
                                                 <?php if ($rows): ?>
                                                     <?php foreach ($rows as $debt): ?>
                                                         <tr>
-                                                            <td><a href="<?= HOME ?>/sales/invoice/<?= $debt->invoicenum ?>"><?= esc($debt->invoicenum) ?></a></td>
+                                                            <td><?= esc($debt->invoicenum) ?></td>
                                                             <td><?= esc($debt->amount) ?></td>
                                                             <td><?= esc($debt->date) ?></td>
                                                         </tr>

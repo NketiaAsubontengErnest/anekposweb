@@ -180,7 +180,7 @@
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item <?= $actives == 'suppliers' ? 'active submenu' : '' ?>">
                     <?php if (Auth::access('Super Admin') && !Auth::access('developer')): ?>
                         <a data-bs-toggle="collapse" href="#charts">
                             <i class="fas fa-bars"></i>
@@ -191,13 +191,18 @@
                     <div class="collapse" id="charts">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="<?= ASSETS ?>/charts/charts.html">
-                                    <span class="sub-item">Chart Js</span>
+                                <a href="<?= HOME ?>/suppliers">
+                                    <span class="sub-item">Supplyers List</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="<?= ASSETS ?>/charts/sparkline.html">
-                                    <span class="sub-item">Sparkline</span>
+                                <a href="<?= HOME ?>/suppliers/add">
+                                    <span class="sub-item">Add Supplyer</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?= HOME ?>/suppliers/debts">
+                                    <span class="sub-item">Add Supplyer Debt</span>
                                 </a>
                             </li>
                         </ul>

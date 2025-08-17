@@ -16,10 +16,10 @@
         .invoice-container {
             background: #fff;
             max-width: 750px;
-            margin: 10px auto;
+            margin: 20px auto;
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
             border-radius: 8px;
-            padding: 32px 40px 24px 40px;
+            padding: 20px 20px 20px 20px;
         }
 
         h2 {
@@ -30,12 +30,12 @@
         }
 
         .invoice-details {
-            margin-bottom: 10px;
+            margin-bottom: 1px;
             font-size: 12px;
         }
 
         .invoice-details p {
-            margin: 5px 0;
+            margin: 7px 0;
         }
 
         table {
@@ -101,7 +101,7 @@
                 box-shadow: none;
                 border-radius: 0;
                 padding: 0;
-                margin: 0;
+                margin: -5;
             }
 
             .print-btn {

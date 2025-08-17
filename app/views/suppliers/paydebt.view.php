@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Customers Debts</h3>
+                        <h3 class="fw-bold mb-3">Pay Debts</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="/dashboard">
@@ -31,33 +31,27 @@
                             </li>
                         </ul>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="card-title">Customers Debts</div>
+                                    <div class="card-title">Pay Debt for <?= esc($row->suplname . ', ' . $row->supllocation . ' - ' . $row->suplphone) ?></div>
                                 </div>
                                 <form action="" method="post">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-6 col-lg-4">
                                                 <div class="form-group">
-                                                    <label for="successInput">Category Name</label>
-                                                    <select class="form-control" name="custid" id="" required>
-                                                        <option value="">Select Customer Name</option>
-                                                        <?php if ($rows): ?>
-                                                            <?php foreach ($rows as $cust): ?>
-                                                                <option value="<?= $cust->custid ?>"><?= esc($cust->custname . ', ' . $cust->custlocation . ' - ' . $cust->custphone) ?></option>
-                                                            <?php endforeach; ?>
-                                                        <?php endif; ?>
-                                                    </select>
+                                                    <label for="successInput">Total Debt</label>
+                                                    <h2>GHC <?= esc($row->supplyer_total_debt->total_debt - $row->supplyer_total_pay->total_pay) ?></h2>
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6 col-lg-4">
                                                 <div class="form-group">
-                                                    <label for="successInput">Order Number / Invoice</label>
-                                                    <input type="text" name="invoicenum" class="form-control" required>
+                                                    <label for="successInput">Payment Date</label>
+                                                    <input type="date" name="date" class="form-control" required>
                                                 </div>
                                             </div>
 
@@ -70,7 +64,7 @@
                                         </div>
                                     </div>
                                     <div class="card-action">
-                                        <button class="btn btn-primary">Add Debt</button>
+                                        <button class="btn btn-primary">Add Payment</button>
                                     </div>
                                 </form>
                             </div>
@@ -79,8 +73,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">Debt List</h4>
-
+                                        <h4 class="card-title">Payments List</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -91,34 +84,26 @@
                                             class="display table table-striped table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Customer Name</th>
-                                                    <th>Total Debt</th>
-                                                    <th>Total Paid</th>
-                                                    <th>Total Bal.</th>
+                                                    <th>Payment Date</th>
+                                                    <th>Amount</th>
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php if ($rowsdebt): ?>
-                                                    <?php foreach ($rowsdebt as $debt): ?>
+                                                <?php if ($rows): ?>
+                                                    <?php foreach ($rows as $pay): ?>
                                                         <tr>
-                                                            <td>
-                                                                <a href="<?= HOME ?>/customers/alldebts/<?= esc($debt->custid) ?>">
-                                                                    <?= esc($debt->customer->custname . ', ' .  $debt->customer->custlocation . ' - ' . $debt->customer->custphone) ?>
-                                                                </a>
-                                                            </td>
-                                                            <td><?= esc(number_format($debt->amount, 2)) ?></td>
-                                                            <td><?= esc(number_format($debt->customer->customer_total_pay->total_pay, 2)) ?></td>
-                                                            <td><?= esc(number_format($debt->amount - $debt->customer->customer_total_pay->total_pay, 2)) ?></td>
+                                                            <td><?= esc($pay->date) ?></td>
+                                                            <td><?= esc($pay->amount) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/customers/alldebts/<?= esc($debt->custid) ?>"
+                                                                    <a href="<?= HOME ?>/suppliers/payedit/<?= esc($pay->id) ?>?invoice=<?= esc($_GET['invoice']) ?>&custid=<?= esc($pay->custid) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""
                                                                         class="btn btn-link btn-primary btn-lg"
                                                                         data-original-title="Edit Task">
-                                                                        <i class="fa fa-money">Depts</i>
+                                                                        <i class="fa fa-edit"></i>
                                                                     </a>
                                                                 </div>
                                                             </td>
@@ -126,13 +111,13 @@
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
                                                     <tr>
-                                                        <td colspan="2">No Data Found!</td>
+                                                        <td colspan="3">No Data Found!</td>
                                                     </tr>
                                                 <?php endif; ?>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <?php $pager->display($rowsdebt ? count($rowsdebt) : 0); ?>
+                                    <?php $pager->display($rows ? count($rows) : 0); ?>
                                 </div>
                             </div>
                         </div>

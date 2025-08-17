@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Customers controller
+ * suppliers controller
  */
-class Customers extends Controller
+class suppliers extends Controller
 {
     function index()
     {
@@ -20,32 +20,22 @@ class Customers extends Controller
         $pager = new Pager($limit);
         $offset = $pager->offset;
 
-        $customers = new Customer();
+        $suppliers = new Supplier();
 
-        if (count($_POST) > 0) {
-            if (isset($_POST['del'])) {
-                $customers->delete($_POST['del'], 'custid');
+        if (isset($_GET['searchsupplyer'])) {
+            $arr['searchuse'] = '%' . $_GET['searchsupplyer'] . '%';
+            $query = "SELECT * FROM `suppliers` WHERE `suplname` LIKE :searchuse OR `suplphone` LIKE :searchuse LIMIT $limit OFFSET $offset";
 
-                $_SESSION['messsage'] = "Customer Deleted Successfully";
-                $_SESSION['status_code'] = "success";
-                $_SESSION['status_headen'] = "Good job!";
-            }
-        }
-
-        if (isset($_GET['searchcustomer'])) {
-            $arr['searchuse'] = '%' . $_GET['searchcustomer'] . '%';
-            $query = "SELECT * FROM `customers` WHERE `custname` LIKE :searchuse OR `custphone` LIKE :searchuse LIMIT $limit OFFSET $offset";
-
-            $data = $customers->findSearch($query, $arr);
+            $data = $suppliers->findSearch($query, $arr);
         } else {
-            $data = $customers->findAll($limit, $offset, 'DESC');
+            $data = $suppliers->findAll($limit, $offset, 'DESC');
         }
 
-        $actives = 'customers';
-        $link = 'customerslist';
+        $actives = 'suppliers';
+        $link = 'supplierslist';
         $hiddenSearch  = '';
         $crumbs  = array();
-        $this->view('customers/index', [
+        $this->view('suppliers/index', [
             'rows1' => $data1,
             'rows' => $data,
             'pager' => $pager,
@@ -65,20 +55,20 @@ class Customers extends Controller
         $data1 = array();
         $data = array();
 
-        $customers = new Customer();
+        $suppliers = new Supplier();
 
         if (count($_POST) > 0) {
-            if ($customers->validate($_POST)) {
+            if ($suppliers->validate($_POST)) {
                 $_POST['shopid'] = Auth::getShop()->shopid;
-                $_POST['custid'] = generateRandomCode(55);
+                $_POST['suplid'] = generateRandomCode(55);
 
-                $customers->insert($_POST);
+                $suppliers->insert($_POST);
 
-                $_SESSION['messsage'] = "Customer Added Successfully";
+                $_SESSION['messsage'] = "Supplyer Added Successfully";
                 $_SESSION['status_code'] = "success";
                 $_SESSION['status_headen'] = "Good job!";
 
-                return $this->redirect('customers');
+                return $this->redirect('suppliers');
             } else {
                 $_SESSION['messsage'] = "Shop Not Added!";
                 $_SESSION['status_code'] = "warning";
@@ -86,11 +76,11 @@ class Customers extends Controller
             }
         }
 
-        $actives = 'customers';
-        $link = 'customersadd';
+        $actives = 'suppliers';
+        $link = 'suppliersadd';
         $hiddenSearch  = '';
         $crumbs  = array();
-        $this->view('customers/add', [
+        $this->view('suppliers/add', [
             'rows1' => $data1,
             'rows' => $data,
             'crumbs' => $crumbs,
@@ -107,25 +97,25 @@ class Customers extends Controller
         }
 
         $data = array();
-        $customers = new Customer();
+        $suppliers = new Supplier();
 
         if (count($_POST) > 0) {
-            $customers->update($id, $_POST, 'custid');
+            $suppliers->update($id, $_POST, 'suplid');
 
-            $_SESSION['messsage'] = "Customer Update Successfully";
+            $_SESSION['messsage'] = "Supplyer Update Successfully";
             $_SESSION['status_code'] = "success";
             $_SESSION['status_headen'] = "Good job!";
 
-            return $this->redirect('customers');
+            return $this->redirect('suppliers');
         }
 
-        $data = $customers->where('custid', $id)[0];
+        $data = $suppliers->where('suplid', $id)[0];
 
-        $actives = 'customers';
-        $link = 'customerslist';
+        $actives = 'suppliers';
+        $link = 'supplierslist';
         $hiddenSearch  = '';
         $crumbs  = array();
-        $this->view('customers/edit', [
+        $this->view('suppliers/edit', [
             'row' => $data,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
@@ -146,33 +136,36 @@ class Customers extends Controller
         $offset = $pager->offset;
 
         $data = array();
-        $custdebts = new Customerdebt();
-        $customers = new Customer();
+        $supldebts = new Supplierdebt();
+        $suppliers = new Supplier();
 
         if (count($_POST) > 0) {
             $_POST['userid'] = Auth::getUsername();
             $_POST['shopid'] = Auth::getShop()->shopid;
-            $custdebts->insert($_POST);
+            $supldebts->insert($_POST);
 
             $_SESSION['messsage'] = "Debt Added Successfully";
             $_SESSION['status_code'] = "success";
             $_SESSION['status_headen'] = "Good job!";
 
-            return $this->redirect('customers/debts');
+            return $this->redirect('suppliers/debts');
         }
 
-        $debtdats = $custdebts->where_query("SELECT DISTINCT custid, SUM(amount) AS amount FROM `customerdebts` WHERE `shopid` =:shopid LIMIT {$limit} OFFSET {$offset}", ['shopid' => Auth::getShop()->shopid]);
-        $data = $customers->where('shopid', Auth::getShop()->shopid);
+        $data = $suppliers->where('shopid', Auth::getShop()->shopid);
 
-        $actives = 'customers';
-        $link = 'customersdebts';
+        $debtdats = $supldebts->where_query("SELECT DISTINCT suplid, SUM(amount) AS amount FROM `supplierdebts` WHERE `shopid` =:shopid LIMIT {$limit} OFFSET {$offset}", ['shopid' => Auth::getShop()->shopid]);
+
+        // show($debtdats);
+        // die;
+
+        $actives = 'suppliers';
+        $link = 'suppliersdebts';
         $hiddenSearch  = '';
         $crumbs  = array();
 
-        $this->view('customers/debts', [
+        $this->view('suppliers/debts', [
             'rows' => $data,
             'rowsdebt' => $debtdats,
-            'pager' => $pager,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
@@ -192,25 +185,23 @@ class Customers extends Controller
         $offset = $pager->offset;
 
         $data = array();
-        $custdebts = new Customerdebt();
-        $customers = new Customer();
+        $custdebts = new Supplierdebt();
+        $suppliers = new Supplier();
 
-        $data = $custdebts->where('custid', $id, $limit, $offset, "DESC");
-        $datacust = $customers->where('custid', $id)[0];
+        $data = $custdebts->where('suplid', $id, $limit, $offset, "DESC");
+        $datacust = $suppliers->where('suplid', $id)[0];
 
-
-
-        $actives = 'customers';
-        $link = 'customersdebts';
+        $actives = 'suppliers';
+        $link = 'suppliersdebts';
         $hiddenSearch  = '';
         $crumbs  = array();
 
-        $this->view('customers/alldebts', [
+        $this->view('suppliers/alldebts', [
             'rows' => $data,
             'row' => $datacust,
             'crumbs' => $crumbs,
-            'hiddenSearch' => $hiddenSearch,
             'pager' => $pager,
+            'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
             'link' => $link
         ]);
@@ -221,41 +212,49 @@ class Customers extends Controller
         if (!Auth::logged_in()) {
             $this->redirect('login');
         }
-        $data = array();
-        $customers = new Customer();
-        $custpay = new Custpaydebt();
 
-        $data = $customers->where_query('SELECT * FROM `customers` WHERE `custid` =:custid AND `shopid` =:shopid', [
-            'custid' => $_GET['custid'],
+        // Setting pagination
+        $limit = 15;
+        $pager = new Pager($limit);
+        $offset = $pager->offset;
+
+        $data = array();
+        $suppliers = new Supplier();
+        $suplypay = new Suplypaydebt();
+
+        $data = $suppliers->where_query('SELECT * FROM `suppliers` WHERE `suplid` =:suplid AND `shopid` =:shopid', [
+            'suplid' => $_GET['suplid'],
             'shopid' => Auth::getShop()->shopid,
         ])[0];
 
-        $datapay = $custpay->where_query('SELECT * FROM `custpaydebts` WHERE `shopid` =:shopid AND `custid` =:custid', [
-            'custid' => $_GET['custid'],
+        $datapay = $suplypay->where_query("SELECT * FROM `suplypaydebts` WHERE `suplid` =:suplid AND `suplid` =:suplid ORDER BY date DESC LIMIT $limit OFFSET $offset", [
+            'suplid' => $_GET['suplid'],
             'shopid' => Auth::getShop()->shopid,
         ]);
 
         if (count($_POST) > 0) {
             $_POST['userid'] = Auth::getUsername();
             $_POST['shopid'] = Auth::getShop()->shopid;
-            $_POST['custid'] = $_GET['custid'];
-            $custpay->insert($_POST);
+            $_POST['suplid'] = $_GET['suplid'];
+
+            $suplypay->insert($_POST);
 
             $_SESSION['messsage'] = "Payment Added Successfully";
             $_SESSION['status_code'] = "success";
             $_SESSION['status_headen'] = "Good job!";
 
-            return $this->redirect("customers/paydebt/$id?invoice=" . $_GET['invoice'] . "&custid=" . $_GET['custid']);
+            return $this->redirect("suppliers/paydebt/$id?invoice=" . $_GET['invoice'] . "&suplid=" . $_GET['suplid']);
         }
 
-        $actives = 'customers';
-        $link = 'customersdebts';
+        $actives = 'suppliers';
+        $link = 'suppliersdebts';
         $hiddenSearch  = '';
         $crumbs  = array();
 
-        $this->view('customers/paydebt', [
+        $this->view('suppliers/paydebt', [
             'row' => $data,
             'rows' => $datapay,
+            'pager' => $pager,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,

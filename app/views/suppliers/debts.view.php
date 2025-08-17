@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="page-header">
-                        <h3 class="fw-bold mb-3">Customers Debts</h3>
+                        <h3 class="fw-bold mb-3">Supplyer Debts</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
                                 <a href="/dashboard">
@@ -24,7 +24,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Customers</a>
+                                <a href="#">Supplyer Debts</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
@@ -42,12 +42,12 @@
                                         <div class="row">
                                             <div class="col-md-6 col-lg-4">
                                                 <div class="form-group">
-                                                    <label for="successInput">Category Name</label>
-                                                    <select class="form-control" name="custid" id="" required>
-                                                        <option value="">Select Customer Name</option>
+                                                    <label for="successInput">Supplyer Name</label>
+                                                    <select class="form-control" name="suplid" id="" required>
+                                                        <option value="">Select Supplyer Name</option>
                                                         <?php if ($rows): ?>
-                                                            <?php foreach ($rows as $cust): ?>
-                                                                <option value="<?= $cust->custid ?>"><?= esc($cust->custname . ', ' . $cust->custlocation . ' - ' . $cust->custphone) ?></option>
+                                                            <?php foreach ($rows as $supl): ?>
+                                                                <option value="<?= $supl->suplid ?>"><?= esc($supl->suplname . ', ' . $supl->supllocation . ' - ' . $supl->suplphone) ?></option>
                                                             <?php endforeach; ?>
                                                         <?php endif; ?>
                                                     </select>
@@ -103,16 +103,16 @@
                                                     <?php foreach ($rowsdebt as $debt): ?>
                                                         <tr>
                                                             <td>
-                                                                <a href="<?= HOME ?>/customers/alldebts/<?= esc($debt->custid) ?>">
-                                                                    <?= esc($debt->customer->custname . ', ' .  $debt->customer->custlocation . ' - ' . $debt->customer->custphone) ?>
+                                                                <a href="<?= HOME ?>/suppliers/alldebts/<?= esc($debt->suplid) ?>">
+                                                                    <?= esc($debt->supplyer->suplname . ', ' .  $debt->supplyer->supllocation . ' - ' . $debt->supplyer->suplphone) ?>
                                                                 </a>
                                                             </td>
                                                             <td><?= esc(number_format($debt->amount, 2)) ?></td>
-                                                            <td><?= esc(number_format($debt->customer->customer_total_pay->total_pay, 2)) ?></td>
-                                                            <td><?= esc(number_format($debt->amount - $debt->customer->customer_total_pay->total_pay, 2)) ?></td>
+                                                            <td><?= esc(number_format($debt->supplyer->supplyer_total_pay->total_pay, 2)) ?></td>
+                                                            <td><?= esc(number_format($debt->amount - $debt->supplyer->supplyer_total_pay->total_pay, 2)) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/customers/alldebts/<?= esc($debt->custid) ?>"
+                                                                    <a href="<?= HOME ?>/suppliers/alldebts/<?= esc($debt->suplid) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""
@@ -132,7 +132,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <?php $pager->display($rowsdebt ? count($rowsdebt) : 0); ?>
                                 </div>
                             </div>
                         </div>
