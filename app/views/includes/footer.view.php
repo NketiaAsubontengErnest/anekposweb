@@ -17,7 +17,7 @@
     </nav>
     <div class="copyright">
       2024, made with <i class="fa fa-heart heart text-danger"></i> by
-      <a href="<?= ASSETS ?>/http://www.themekita.com">ThemeKita</a>
+      <a href="https://ernestnketiaasubonteng.netlify.app/">Anek Tech</a>
     </div>
     <div>
       <div id="dateTimeDisplay" style="font-size: 16px; font-weight: bold;"></div>
