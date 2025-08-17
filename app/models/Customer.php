@@ -1,5 +1,5 @@
-Customer
 <?php
+
 /**
  * 
  * Customer Model
@@ -15,9 +15,9 @@ class Customer extends Model
       'custlocation',
    ];
 
-   protected $beforeInset = [
-      //  'make_course_id',
-   ];
+   // protected $beforeInset = [
+   //    //  'make_course_id',
+   // ];
    protected $afterSelect = [
       'get_Customer_total_debt',
       'get_Customer_total_pay',
@@ -62,6 +62,7 @@ class Customer extends Model
       }
       return $data;
    }
+
    public function get_Customer_total_pay($data)
    {
       $custpaydebt = new Custpaydebt();

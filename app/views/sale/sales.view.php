@@ -142,6 +142,7 @@
                                     </div>
                                     <div class="">
                                         <button class="btn btn-primary my-2 w-100 py-4" id="makePurchaseBtn" type="submit">Make Purchase</button>
+                                        <!-- <button class="btn btn-secondary my-2 w-100" id="printPreviewBtn" type="button">Print Preview</button> -->
                                         <button class="btn btn-danger my-2 w-100" id="clearCartBtn" type="button">Clear Cart</button>
                                     </div>
                                 </div>
@@ -300,6 +301,27 @@
 
                     });
                 </script>
+
+                <!-- <script>
+                    $(document).ready(function() {
+                        $("#printPreviewBtn").on("click", function() {
+                            let printWindow = window.open('', '_blank');
+                            let cartContent = "<html><head><title>Print Preview</title></head><body>";
+                            cartContent += "<h2>Cart Summary</h2><table border='1' width='100%'><tr><th>Product Name</th><th>Price</th><th>Quantity</th></tr>";
+
+                            $('#cartTable tbody tr').each(function() {
+                                let productName = $(this).find('td').eq(0).text();
+                                let productPrice = $(this).find('td').eq(1).text();
+                                let productQuantity = $(this).find('.quantity-input').val();
+                                cartContent += `<tr><td>${productName}</td><td>${productPrice}</td><td>${productQuantity}</td></tr>`;
+                            });
+
+                            cartContent += "</table><br><button onclick='window.print()'>Print</button></body></html>";
+                            printWindow.document.write(cartContent);
+                            printWindow.document.close();
+                        });
+                    });
+                </script> -->
 
             </div>
             <!-- Bootstrap JS -->

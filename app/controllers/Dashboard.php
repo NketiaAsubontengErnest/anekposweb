@@ -11,9 +11,12 @@ class Dashboard extends Controller
             $this->redirect('login');
         }
 
+        $shops = new Shop();
+
         $data = array();
         $arr = [];
 
+        $shops->query("UPDATE `shops` SET `status`= 1 WHERE `enddate` <= CURRENT_DATE");
 
         // if (count($_POST) > 0 && isset($_POST['season'])) {
         //     $_SESSION['seasondata'] = $data['season'] = $season->where('id', $_POST['season'])[0];
@@ -27,7 +30,7 @@ class Dashboard extends Controller
         //     $arr['seasonid'] = $_SESSION['seasondata']->id;
         //     $data['season'] = $_SESSION['seasondata'];           
         // }
-        
+
         $msg = " Logged in successfully";
         $crumbs[] = ['Dashboard', ''];
         $actives = 'dashboard';

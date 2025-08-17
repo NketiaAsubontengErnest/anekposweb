@@ -11,22 +11,40 @@ class Users extends Controller
             $this->redirect('login');
         }
 
+        // Setting pagination
+        $limit = 15;
+        $pager = new Pager($limit);
+        $offset = $pager->offset;
+
         $data = array();
 
         $users = new User();
 
         if (count($_POST) > 0) {
             if (isset($_POST['del'])) {
-                $users->delete($_POST['del'], 'username');
+                $query = "UPDATE `users` SET `status`= :status WHERE `username` = :username";
+                $users->query($query, [
+                    'status' => $_POST['status'],
+                    'username' => $_POST['del']
+                ]);
 
-                $_SESSION['messsage'] = "User Deleted Successfully";
+                $_SESSION['messsage'] = "User Blocked Successfully";
                 $_SESSION['status_code'] = "success";
                 $_SESSION['status_headen'] = "Good job!";
             }
             return $this->redirect('users');
         }
 
-        $data = $users->where('shopid', Auth::getShop()->shopid);
+        if (isset($_GET['searchuser'])) {
+            $search = '%' . $_GET['searchuser'] . '%';
+            $query = "SELECT * FROM `users` WHERE (`firstname` LIKE :search OR `lastname` LIKE :search OR `username` LIKE :search) AND shopid =:shopid ORDER BY `id` DESC LIMIT $limit OFFSET $offset";
+            $data = $users->query($query, [
+                'search' => $search,
+                'shopid' => Auth::getShop()->shopid
+            ]);
+        } else {
+            $data = $users->where('shopid', Auth::getShop()->shopid, $limit, $offset, 'DESC');
+        }
 
         $actives = 'users';
         $link = 'userslist';
@@ -37,6 +55,7 @@ class Users extends Controller
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
+            'pager' => $pager,
             'link' => $link
         ]);
     }

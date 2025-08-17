@@ -42,7 +42,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
-                                        <h4 class="card-title">My Sales History</h4>
+                                        <h4 class="card-title">List of Products on Invoice <?= $id ?></h4>
                                         <a href="<?= HOME ?>/sales"
                                             class="btn btn-primary btn-round ms-auto">
                                             <i class="fa fa-cart"></i>
@@ -58,48 +58,46 @@
                                             class="display table table-striped table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Invoice</th>
                                                     <th>Product</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Price</th>
                                                     <th>Total</th>
                                                     <th>Sold Date</th>
-                                                    <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php if ($salesdata): ?>
                                                     <?php foreach ($salesdata as $prod): ?>
                                                         <tr>
-                                                            <td><?= esc($prod->ordernumber) ?></td>
                                                             <td><?= esc($prod->product->pro_name) ?></td>
                                                             <td><?= esc($prod->quantity) ?></td>
                                                             <td>GHC <?= esc($prod->price) ?></td>
                                                             <td>GHC <?= esc(number_format($prod->price * $prod->quantity, 2)) ?></td>
                                                             <td><?= esc($prod->datesold) ?></td>
-                                                            <td>
-                                                                <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/sales/return/<?= esc($prod->id) ?>"
-                                                                        type="button"
-                                                                        data-bs-toggle="tooltip"
-                                                                        title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </a>
-                                                                </div>
-                                                            </td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
                                                     <tr>
-                                                        <td colspan="8">No Data Found!</td>
+                                                        <td colspan="5">No Data Found!</td>
                                                     </tr>
                                                 <?php endif; ?>
                                             </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <hr>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="3">Total</th>
+                                                    <th>
+                                                        <h3>GHC <?= esc(number_format($subdata->sub_total, 2)) ?></h3>
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
+                                            </tfoot>
                                         </table>
                                     </div>
-                                    <?php $pager->display($salesdata ? count($salesdata) : 0); ?>
                                 </div>
                             </div>
                         </div>

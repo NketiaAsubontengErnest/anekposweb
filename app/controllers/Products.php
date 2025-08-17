@@ -31,8 +31,8 @@ class Products extends Controller
             }
         }
 
-        if (isset($_GET['search_box'])) {
-            $arr['searchuse'] = '%' . $_GET['search_box'] . '%';
+        if (isset($_GET['searchproduct'])) {
+            $arr['searchuse'] = '%' . $_GET['searchproduct'] . '%';
             $query = "SELECT * FROM `products` WHERE `productid` LIKE :searchuse OR `barcode` LIKE :searchuse OR `pro_name` LIKE :searchuse LIMIT $limit OFFSET $offset";
 
             $data = $products->findSearch($query, $arr);
@@ -233,7 +233,7 @@ class Products extends Controller
 
         if (count($_POST) > 0) {
             $_POST['category'] = strtoupper($_POST['category']);
-            
+
             $categorys->update($id, $_POST,);
 
             $_SESSION['messsage'] = "Category Update Successfully";
@@ -244,7 +244,7 @@ class Products extends Controller
         }
 
         $data = $categorys->where('id', $id)[0];
-        
+
         $actives = 'products';
         $link = 'category';
         $hiddenSearch  = '';
@@ -284,14 +284,13 @@ class Products extends Controller
             }
         }
 
-        if (isset($_GET['search_box'])) {
-            $arr['searchuse'] = '%' . $_GET['search_box'] . '%';
-            $query = "SELECT books.*, subjects.subject, levels.class, types.booktype FROM `books` LEFT JOIN subjects ON books.subjectid = subjects.id LEFT JOIN levels ON books.classid = levels.id LEFT JOIN types ON books.typeid = types.id WHERE subjects.subject LIKE :searchuse OR levels.class LIKE :searchuse OR types.booktype LIKE :searchuse LIMIT $limit OFFSET $offset";
+        if (isset($_GET['searchproduct'])) {
+            $arr['searchuse'] = '%' . $_GET['searchproduct'] . '%';
+            $query = "SELECT * FROM `products` WHERE `productid` LIKE :searchuse OR `barcode` LIKE :searchuse OR `pro_name` LIKE :searchuse LIMIT $limit OFFSET $offset";
 
             $data = $products->findSearch($query, $arr);
         } else {
-            $query = "SELECT * FROM `products` WHERE `quantity` <= `threshold` LIMIT $limit OFFSET $offset";
-            $data = $products->where_query($query, []);
+            $data = $products->findAll($limit, $offset, 'DESC');
         }
 
         $crumbs[] = ['Dashboard', 'dashboard'];
@@ -321,9 +320,20 @@ class Products extends Controller
         $offset = $pager->offset;
 
         $products = new Product();
-
+        $batchs = new Batch();
 
         if (count($_POST) > 0) {
+            $arrs['shopid'] = Auth::getShop()->shopid;
+            $arrs['productid'] = $id;
+            $arrs['batchcode'] = $_POST['batchcode'];
+            $arrs['expiredate'] = $_POST['expiredate'];
+            $arrs['quantity'] = $_POST['quantity'];
+
+            unset($_POST['batchcode']);
+            unset($_POST['expiredate']);
+
+            $batchs->insert($arrs);
+
             $_POST['productid'] = $id;
             $query = "UPDATE `products` SET `quantity`=`quantity` + :quantity,`threshold`=:threshold WHERE `productid` =:productid";
             $products->query($query, $_POST);
@@ -331,7 +341,7 @@ class Products extends Controller
             $_SESSION['status_code'] = "success";
             $_SESSION['status_headen'] = "Good job!";
 
-            return $this->redirect("products/update");
+            return $this->redirect("products");
         }
 
         $data = $products->where('productid', $id)[0];
@@ -344,6 +354,46 @@ class Products extends Controller
         $hiddenSearch = "";
         return $this->view('products/products.quantupdate', [
             'row' => $data,
+            'hiddenSearch' => $hiddenSearch,
+            'pager' => $pager,
+            'crumbs' => $crumbs,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
+
+    function expires()
+    {
+        if (!Auth::logged_in()) {
+            return $this->redirect('login');
+        }
+        // Setting pagination
+        $limit = 15;
+        $pager = new Pager($limit);
+        $offset = $pager->offset;
+
+        $batchs = new Batch();
+
+        if (count($_POST) > 0) {
+            $query = "UPDATE `products` SET `quantity`=`quantity` + :quantity,`threshold`=:threshold WHERE `productid` =:productid";
+            //$products->query($query, $_POST);
+            $_SESSION['messsage'] = "Quantity Added Successfully";
+            $_SESSION['status_code'] = "success";
+            $_SESSION['status_headen'] = "Good job!";
+
+            return $this->redirect("products");
+        }
+
+        $data = $batchs->where_query("SELECT * FROM `batchs` WHERE `expiredate` <= CURRENT_DATE");
+
+        $crumbs[] = ['Dashboard', 'dashboard'];
+        $crumbs[] = ['Products', 'products'];
+        $crumbs[] = ['Category', ''];
+        $actives = 'products';
+        $link = 'updates';
+        $hiddenSearch = "";
+        return $this->view('products/expires', [
+            'rows' => $data,
             'hiddenSearch' => $hiddenSearch,
             'pager' => $pager,
             'crumbs' => $crumbs,

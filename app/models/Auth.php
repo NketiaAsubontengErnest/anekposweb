@@ -6,7 +6,7 @@
 class Auth
 {
     public static function authenticate($row)
-    {        
+    {
         $_SESSION['ANEKPOSUSER'] = $row;
     }
 
@@ -63,19 +63,16 @@ class Auth
         return "Unknown";
     }
 
-    public static function access($rank = 'marketer')
+    public static function access($rank = 'Sales')
     {
         if (!isset($_SESSION['ANEKPOSUSER'])) {
             return false;
         }
         $logged_in_rank = $_SESSION['ANEKPOSUSER']->rank; //the rank for current user
-        $RANK['director']      = ['director', 'g-account', 'account', 'verification', 'stores', 'marketer'];
-        $RANK['g-account']      = ['g-account', 'account', 'verification', 'stores', 'marketer', 'marketer'];
-        $RANK['auditor']      = ['g-account', 'account', 'verification', 'stores', 'marketer'];
-        $RANK['account']      = ['account', 'verification', 'stores'];
-        $RANK['verification']      = ['verification'];
-        $RANK['stores']      = ['stores'];
-        $RANK['marketer']      = ['marketer'];
+        $RANK['developer']      = ['developer', 'Super Admin', 'Admin', 'Sales'];
+        $RANK['Super Admin']    = ['Super Admin', 'Admin', 'Sales'];
+        $RANK['Admin']          = ['Admin', 'Sales'];
+        $RANK['Sales']          = ['Sales'];
 
         if (!isset($RANK[$logged_in_rank])) {
             return false;

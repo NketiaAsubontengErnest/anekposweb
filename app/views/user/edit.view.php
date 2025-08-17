@@ -94,7 +94,9 @@
                                                             class="form-select form-control-lg" id="largeSelect">
                                                             <option <?= get_select('rank', 'Sales', $row->rank) ?> value="Sales">Sales</option>
                                                             <option <?= get_select('rank', 'Admin', $row->rank) ?> value="Admin">Admin</option>
-                                                            <option <?= get_select('rank', 'Super Admin', $row->rank) ?> value="Super Admin">Super Admin</option>
+                                                            <?php if (Auth::getRank() == 'developer'): ?>
+                                                                <option <?= get_select('rank', 'Super Admin', $row->rank) ?> value="Super Admin">Super Admin</option>
+                                                            <?php endif; ?>
                                                         </select>
                                                         <?php if (isset($errors['rank'])) : ?>
                                                             <code><?= $errors['rank'] ?></code>

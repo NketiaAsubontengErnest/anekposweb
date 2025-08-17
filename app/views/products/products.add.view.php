@@ -67,16 +67,33 @@
                                                         <code><?= $errors['quantity'] ?></code>
                                                     <?php endif; ?>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="quantity">Expire Date</label>
-                                                    <input name="expiredate"
-                                                        type="date"
-                                                        class="form-control"
-                                                        id="expiredate"
-                                                        placeholder="20" />
-                                                    <?php if (isset($errors['expiredate'])) : ?>
-                                                        <code><?= $errors['expiredate'] ?></code>
-                                                    <?php endif; ?>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="quantity">Expire Date</label>
+                                                            <input name="expiredate"
+                                                                type="date"
+                                                                class="form-control"
+                                                                id="expiredate"
+                                                                placeholder="20" />
+                                                            <?php if (isset($errors['expiredate'])) : ?>
+                                                                <code><?= $errors['expiredate'] ?></code>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6">
+
+                                                        <div class="form-group">
+                                                            <label for="batchcode">Batch Code</label>
+                                                            <input
+                                                                value="<?= get_var('batchcode') ?>"
+                                                                type="text"
+                                                                class="form-control"
+                                                                id="batchcode"
+                                                                name="batchcode"
+                                                                placeholder="X X X X X X X X" required />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
 

@@ -22,8 +22,8 @@ class Shops extends Controller
 
         $shops = new Shop();
 
-        if(count($_POST) > 0){
-            if(isset($_POST['del'])){
+        if (count($_POST) > 0) {
+            if (isset($_POST['del'])) {
                 $shops->delete($_POST['del'], 'shopid');
 
                 $_SESSION['messsage'] = "Shop Deleted Successfully";
@@ -54,6 +54,7 @@ class Shops extends Controller
             'link' => $link
         ]);
     }
+
     function add()
     {
         if (!Auth::logged_in()) {
@@ -100,6 +101,7 @@ class Shops extends Controller
             'link' => $link
         ]);
     }
+
     function edit($id)
     {
         if (!Auth::logged_in()) {
@@ -127,6 +129,41 @@ class Shops extends Controller
         $hiddenSearch  = '';
         $crumbs  = array();
         $this->view('shop/edit', [
+            'row' => $data,
+            'crumbs' => $crumbs,
+            'hiddenSearch' => $hiddenSearch,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
+
+    function assign($id)
+    {
+        if (!Auth::logged_in()) {
+            $this->redirect('login');
+        }
+
+        $data = array();
+
+        $users = new User();
+
+        if (count($_POST) > 0) {
+            $_POST['shopid'] = $id;
+
+            $users->insert($_POST);
+
+            $_SESSION['messsage'] = "User Assigned to Shop Successfully";
+            $_SESSION['status_code'] = "success";
+            $_SESSION['status_headen'] = "Good job!";
+
+            return $this->redirect('shops');
+        }
+
+        $actives = 'shops';
+        $link = 'shoplist';
+        $hiddenSearch  = '';
+        $crumbs  = array();
+        $this->view('shop/assign', [
             'row' => $data,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,

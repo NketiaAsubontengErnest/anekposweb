@@ -32,8 +32,8 @@ class Customers extends Controller
             }
         }
 
-        if (isset($_GET['search_box'])) {
-            $arr['searchuse'] = '%' . $_GET['search_box'] . '%';
+        if (isset($_GET['searchcustomer'])) {
+            $arr['searchuse'] = '%' . $_GET['searchcustomer'] . '%';
             $query = "SELECT * FROM `customers` WHERE `custname` LIKE :searchuse OR `custphone` LIKE :searchuse LIMIT $limit OFFSET $offset";
 
             $data = $customers->findSearch($query, $arr);
@@ -48,6 +48,7 @@ class Customers extends Controller
         $this->view('customers/index', [
             'rows1' => $data1,
             'rows' => $data,
+            'pager' => $pager,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
@@ -160,7 +161,7 @@ class Customers extends Controller
             return $this->redirect('customers/debts');
         }
 
-        $debtdats = $custdebts->where('shopid', Auth::getShop()->shopid, $limit, $offset, "DESC");
+        $debtdats = $custdebts->where_query("SELECT DISTINCT custid, SUM(amount) AS amount FROM `customerdebts` WHERE `shopid` =:shopid LIMIT {$limit} OFFSET {$offset}", ['shopid' => Auth::getShop()->shopid]);
         $data = $customers->where('shopid', Auth::getShop()->shopid);
 
         $actives = 'customers';
@@ -183,7 +184,7 @@ class Customers extends Controller
         if (!Auth::logged_in()) {
             $this->redirect('login');
         }
-        
+
         // Setting pagination
         $limit = 15;
         $pager = new Pager($limit);
@@ -193,8 +194,10 @@ class Customers extends Controller
         $custdebts = new Customerdebt();
         $customers = new Customer();
 
-        $data = $custdebts->where('custid',$id, $limit, $offset, "DESC");
-        $datacust = $customers->where('custid',$id)[0];
+        $data = $custdebts->where('custid', $id, $limit, $offset, "DESC");
+        $datacust = $customers->where('custid', $id)[0];
+
+
 
         $actives = 'customers';
         $link = 'customersdebts';
@@ -220,14 +223,14 @@ class Customers extends Controller
         $customers = new Customer();
         $custpay = new Custpaydebt();
 
-        $data = $customers->where_query('SELECT * FROM `customers` WHERE `custid` =:custid AND `shopid` =:shopid',[
-            'custid' =>$_GET['custid'],
-            'shopid' =>Auth::getShop()->shopid,
+        $data = $customers->where_query('SELECT * FROM `customers` WHERE `custid` =:custid AND `shopid` =:shopid', [
+            'custid' => $_GET['custid'],
+            'shopid' => Auth::getShop()->shopid,
         ])[0];
 
         $datapay = $custpay->where_query('SELECT * FROM `custpaydebts` WHERE `shopid` =:shopid AND `custid` =:custid', [
-            'custid'=>$_GET['custid'],
-            'shopid'=>Auth::getShop()->shopid,
+            'custid' => $_GET['custid'],
+            'shopid' => Auth::getShop()->shopid,
         ]);
 
         if (count($_POST) > 0) {
@@ -240,7 +243,7 @@ class Customers extends Controller
             $_SESSION['status_code'] = "success";
             $_SESSION['status_headen'] = "Good job!";
 
-            return $this->redirect("customers/paydebt/$id?invoice=".$_GET['invoice']."&custid=".$_GET['custid']);
+            return $this->redirect("customers/paydebt/$id?invoice=" . $_GET['invoice'] . "&custid=" . $_GET['custid']);
         }
 
         $actives = 'customers';

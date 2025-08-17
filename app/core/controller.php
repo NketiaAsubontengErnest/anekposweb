@@ -1,22 +1,26 @@
-<?php 
- /**
-  * main controller class
-  */
-  
-class Controller{
+<?php
+
+/**
+ * main controller class
+ */
+
+class Controller
+{
     //this is to load all views
-    public function view($view, $data = array()){
-        extract($data);//this extract data passed from the models
-        if(file_exists("app/views/$view.view.php")){
-            require ("app/views/$view.view.php");
-        }else{
-            require ("app/views/404.view.php");
+    public function view($view, $data = array())
+    {
+        extract($data); //this extract data passed from the models
+        if (file_exists("app/views/$view.view.php")) {
+            require("app/views/$view.view.php");
+        } else {
+            require("app/views/404.view.php");
         }
     }
     //this is to load all models
-    public function load_model($model){
+    public function load_model($model)
+    {
         $model = ucfirst($model);
-        if(file_exists("../app/models/$model.php")){
+        if (file_exists("../app/models/$model.php")) {
             require("../app/models/$model.php");
             return $model = new $model;
         }
@@ -24,9 +28,18 @@ class Controller{
     }
 
     //this is to redirect all links
-    public function redirect($link){
-        header("Location: ".HOME."/".trim($link,"/"));
+    public function redirect($link)
+    {
+        header("Location: " . HOME . "/" . trim($link, "/"));
         die;
     }
+
+    public function tab_redirect($link, $next = "")
+    {
+        ob_end_clean(); // remove previous echoed data
+        echo  "<script>
+        window.open('" . $link . "', '_blank');
+        window.location.href = '" . $next . "';</script>";
+        exit; // nothing else to do
+    }
 }
-  

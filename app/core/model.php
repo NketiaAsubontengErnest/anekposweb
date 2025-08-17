@@ -37,7 +37,7 @@ class Model extends Database
     {
         if ($limit > 0) {
             $query = "$query ORDER BY id $rotations LIMIT $limit OFFSET $offset";
-        }        
+        }
 
         $data = $this->query($query, $arr);
 
@@ -84,7 +84,7 @@ class Model extends Database
         return $this->query($query);
     }
 
-    public function findSearch($querystrings, $value= array())
+    public function findSearch($querystrings, $value = array())
     {
         $data = $this->query($querystrings, $value);
         //after select
@@ -121,7 +121,7 @@ class Model extends Database
         return $data;
     }
 
-    public function where_query($query, $data)
+    public function where_query($query, $data = array())
     {
         $data = $this->query($query, $data);
 
@@ -169,7 +169,7 @@ class Model extends Database
                     unset($data[$key]);
                 }
             }
-        }        
+        }
 
         //run needed functions before insert
         if (property_exists($this, 'beforeInset')) {

@@ -130,6 +130,36 @@
                                                             placeholder="20.00" />
                                                     </div>
                                                 </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 col-lg-4">
+
+                                                        <div class="form-group">
+                                                            <label for="expiredate">Expire Date</label>
+                                                            <input
+                                                                value="<?= get_var('expiredate') ?>"
+                                                                type="date"
+                                                                class="form-control"
+                                                                id="expiredate"
+                                                                name="expiredate"
+                                                                placeholder="dd/mm/yyyy" required />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 col-lg-4">
+
+                                                        <div class="form-group">
+                                                            <label for="batchcode">Batch Code</label>
+                                                            <input
+                                                                value="<?= get_var('batchcode') ?>"
+                                                                type="text"
+                                                                class="form-control"
+                                                                id="batchcode"
+                                                                name="batchcode"
+                                                                placeholder="X X X X X X X X" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="card-action">

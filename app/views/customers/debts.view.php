@@ -47,7 +47,7 @@
                                                         <option value="">Select Customer Name</option>
                                                         <?php if ($rows): ?>
                                                             <?php foreach ($rows as $cust): ?>
-                                                                <option value="<?=$cust->custid?>"><?=esc($cust->custname .', '. $cust->custlocation.' - '.$cust->custphone)?></option>
+                                                                <option value="<?= $cust->custid ?>"><?= esc($cust->custname . ', ' . $cust->custlocation . ' - ' . $cust->custphone) ?></option>
                                                             <?php endforeach; ?>
                                                         <?php endif; ?>
                                                     </select>
@@ -91,10 +91,10 @@
                                             class="display table table-striped table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Invoice</th>
                                                     <th>Customer Name</th>
-                                                    <th>Amount</th>
                                                     <th>Total Debt</th>
+                                                    <th>Total Paid</th>
+                                                    <th>Total Bal.</th>
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
@@ -102,23 +102,23 @@
                                                 <?php if ($rowsdebt): ?>
                                                     <?php foreach ($rowsdebt as $debt): ?>
                                                         <tr>
-                                                            <td><?= esc($debt->invoicenum) ?></td>
                                                             <td>
-                                                                <a href="<?=HOME?>/customers/alldebts/<?=esc($debt->custid)?>">
-                                                                <?= esc($debt->customer->custname .', '.  $debt->customer->custlocation .' - '. $debt->customer->custphone) ?>
+                                                                <a href="<?= HOME ?>/customers/alldebts/<?= esc($debt->custid) ?>">
+                                                                    <?= esc($debt->customer->custname . ', ' .  $debt->customer->custlocation . ' - ' . $debt->customer->custphone) ?>
                                                                 </a>
                                                             </td>
-                                                            <td><?= esc($debt->amount) ?></td>
-                                                            <td><?= esc($debt->customer->customer_total_debt->total_debt) ?></td>
+                                                            <td><?= esc(number_format($debt->amount, 2)) ?></td>
+                                                            <td><?= esc(number_format($debt->customer->customer_total_pay->total_pay, 2)) ?></td>
+                                                            <td><?= esc(number_format($debt->amount - $debt->customer->customer_total_pay->total_pay, 2)) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/customers/paydebt/<?= esc($debt->id) ?>?invoice=<?=esc($debt->invoicenum)?>&custid=<?=esc($debt->custid)?>"
+                                                                    <a href="<?= HOME ?>/customers/alldebts/<?= esc($debt->custid) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""
                                                                         class="btn btn-link btn-primary btn-lg"
                                                                         data-original-title="Edit Task">
-                                                                        <i class="fa fa-edit"></i>
+                                                                        <i class="fa fa-money">Depts</i>
                                                                     </a>
                                                                 </div>
                                                             </td>

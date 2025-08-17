@@ -23,6 +23,7 @@ class Sale extends Model
     protected $beforeInset = [];
     protected $afterSelect = [
         'get_Product',
+        'get_seller',
     ];
 
     public function validate($data)
@@ -49,13 +50,27 @@ class Sale extends Model
         return $data;
     }
 
-    public function calculate_Sales($date)
+    public function calculate_Sales()
     {
         $sales = new Sale();
-        return $sales->query("SELECT SUM(`quantity` * `price`) AS daily_total_sales FROM `sales` WHERE `datesold` =:datesold AND `userid`=:userid AND `shopid`=:shopid", [
-            'datesold' => $date,
+        return $sales->query("SELECT SUM(`quantity` * `price`) AS daily_total_sales FROM `sales` WHERE `datesold` =CURRENT_DATE AND `userid`=:userid AND `shopid`=:shopid", [
             'userid' => Auth::getUsername(),
             'shopid' => Auth::getShop()->shopid
         ])[0]->daily_total_sales;
+    }
+    public function get_seller($data)
+    {
+        $users = new User();
+        foreach ($data as $key => $row) {
+            if (!empty($row->userid)) {
+                $result = $users->query("SELECT * FROM `users` WHERE `username` =:userid AND `shopid` =:shopid", [
+                    'userid' => Auth::getUsername(),
+                    'shopid' => Auth::getShop()->shopid
+                ]);
+                $data[$key]->seller = $result[0];
+            }
+        }
+
+        return $data;
     }
 }

@@ -1,14 +1,14 @@
-<?php $this->view('includes/header', ['crumbs' => $crumbs, 'actives' => $actives, 'link'=>$link, 'hiddenSearch' => $hiddenSearch,]) ?>
+<?php $this->view('includes/header', ['crumbs' => $crumbs, 'actives' => $actives, 'link' => $link, 'hiddenSearch' => $hiddenSearch,]) ?>
 
 <body>
     <div class="wrapper">
         <!-- Sidebar -->
-        <?php $this->view('includes/sidebar', ['crumbs' => $crumbs, 'actives' => $actives, 'link'=>$link, 'hiddenSearch' => $hiddenSearch,]) ?>
+        <?php $this->view('includes/sidebar', ['crumbs' => $crumbs, 'actives' => $actives, 'link' => $link, 'hiddenSearch' => $hiddenSearch,]) ?>
         <!-- End Sidebar -->
 
         <div class="main-panel">
 
-            <?php $this->view('includes/navbar', ['crumbs' => $crumbs, 'actives' => $actives, 'link'=>$link, 'hiddenSearch' => $hiddenSearch,]) ?>
+            <?php $this->view('includes/navbar', ['crumbs' => $crumbs, 'actives' => $actives, 'link' => $link, 'hiddenSearch' => $hiddenSearch,]) ?>
 
             <div class="container">
                 <div class="page-inner">
@@ -34,28 +34,25 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <div class="card-title">Category</div>
-                                </div>
                                 <form action="" method="post">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-6 col-lg-4">
-
-                                                <div class="form-group">
-                                                    <label for="successInput">Category Name</label>
-                                                    <input
-                                                        name="category"
-                                                        type="text"
-                                                        id="successInput"
-                                                        class="form-control" />
+                                                <div class="form-group d-flex align-items-end">
+                                                    <div style="flex:1;">
+                                                        <label for="successInput">Add Category</label>
+                                                        <input
+                                                            name="category"
+                                                            type="text"
+                                                            id="successInput"
+                                                            placeholder="Category Name"
+                                                            required
+                                                            class="form-control" />
+                                                    </div>
+                                                    <button class="btn btn-primary ms-2" style="height:40px;">Add </button>
                                                 </div>
-
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="card-action">
-                                        <button class="btn btn-primary">Add Category</button>
                                     </div>
                                 </form>
                             </div>
@@ -65,7 +62,6 @@
                                 <div class="card-header">
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">Category List</h4>
-
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -88,7 +84,7 @@
                                                             <td><?= esc($cat->category) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?=HOME?>/products/catedit/<?= esc($cat->id) ?>"
+                                                                    <a href="<?= HOME ?>/products/catedit/<?= esc($cat->id) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""

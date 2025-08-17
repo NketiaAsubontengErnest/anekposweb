@@ -26,6 +26,7 @@ class User extends Model
    protected $afterSelect = [
       'get_Shop',
    ];
+
    public function validate($data)
    {
       $this->errors = array();
@@ -54,9 +55,17 @@ class User extends Model
 
    public function make_user_id($data)
    {
-      $ids = $this->query("SELECT * FROM `users` WHERE `shopid` =:shopid ORDER BY ID DESC LIMIT 1", ['shopid'=>Auth::getShop()->shopid])[0]->username;
+      if (!isset($data['shopid'])) {
+         $arr['shopid'] = Auth::getShop()->shopid;
+         $das = $this->query("SELECT * FROM `users` WHERE `shopid` =:shopid ORDER BY ID DESC LIMIT 1", $arr);
+      } else {
+         $arr['shopid'] = $data['shopid'];
+         $das = $this->query("SELECT * FROM `users` WHERE `shopid` =:shopid ORDER BY ID DESC LIMIT 1", $arr);
+      }
 
-      $ids = substr($ids, 3);
+      $ids = substr($das[0]->username, 3);
+
+      $arr = $this->query("SELECT * FROM `shops` WHERE `shopid` =:shopid", $arr)[0];
 
       $ids++;
       if ($ids < 10) {
@@ -64,13 +73,13 @@ class User extends Model
       } elseif ($ids < 100) {
          $ids = "00" . $ids;
       } elseif ($ids < 1000) {
-         $ids = "0S" . $ids;
+         $ids = "0" . $ids;
       }
 
-      $data['username'] = Auth::getShop()->initials. '' . $ids;
-      $data['password'] = Auth::getShop()->initials. '' . $ids;
+      $data['username'] = $arr->initials . '' . $ids;
+      $data['password'] = $arr->initials . '' . $ids;
 
-      $data['shopid'] = Auth::getShop()->shopid;
+      $data['shopid'] = $arr->shopid;
 
       return $data;
    }
@@ -109,7 +118,7 @@ class User extends Model
       }
       return $data;
    }
-   
+
    public function get_Officer($data)
    {
       $offi = new User();

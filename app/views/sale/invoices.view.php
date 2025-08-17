@@ -36,48 +36,58 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="card">
-                                <div class="d-flex justify-content-between mt-4">
-                                    <!-- Employee Select -->
-                                    <div class="form-group mb-4 col-md-6">
-                                        <label for="employeeSelect">Employee Name</label>
-                                        <select name="userid" id="employeeSelect" class="form-control" onchange="submitForm()">
-                                            <option value="">Select an Employee</option>
-                                            <?php foreach ($employees as $employee): ?>
-                                                <option value="<?= esc($employee->username) ?>" <?= isset($_GET['userid']) && $_GET['userid'] == $employee->username ? 'selected' : '' ?>>
-                                                    <?= esc($employee->firstname) ?> <?= esc($employee->lastname) ?> - <?= esc($employee->username) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-
-                                    <!-- Date Select -->
-                                    <div class="form-group mb-4 col-md-4">
-                                        <label for="dateOption">Sold Date</label>
-                                        <select name="solddate" id="dateOption" class="form-control" onchange="submitForm()">
-                                            <option value="">Select Date</option>
-                                            <?php foreach ($dates as $date): ?>
-                                                <option value="<?= esc($date->datesold) ?>" <?= isset($_GET['solddate']) && $_GET['solddate'] == $date->datesold ? 'selected' : '' ?>>
-                                                    <?= esc($date->datesold) ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    <!-- Date Select -->
-                                    <div class="form-group mb-4 col-md-2">
-                                        <div class="form-group mb-4 col-md-2 d-flex align-items-end">
-                                            <button class="btn btn-secondary" onclick="clearFilters()">Refresh</button>
+                            <!-- Invoice Search Input -->
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label for="invoiceSearch">Search Invoice</label>
+                                <nav
+                                    class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="submit" class="btn btn-search pe-1">
+                                                <i class="fa fa-search search-icon"></i>
+                                            </button>
                                         </div>
+                                        <input
+                                            id="invoiceSearch"
+                                            type="text"
+                                            placeholder="Type invoice number..."
+                                            value="<?= isset($_GET['invoice']) ? esc($_GET['invoice']) : '' ?>"
+                                            class="form-control" />
                                     </div>
-                                </div>
+                                </nav>
                             </div>
+                            <script>
+                                // Search invoice while typing
+                                document.getElementById('invoiceSearch').addEventListener('input', function() {
+                                    const value = this.value.trim();
+                                    const urlParams = new URLSearchParams(window.location.search);
+                                    if (value) {
+                                        urlParams.set('invoice', value);
+                                    } else {
+                                        urlParams.delete('invoice');
+                                    }
+                                    // Retain other filters
+                                    window.location.search = urlParams.toString();
+                                });
+
+                                // Keep cursor in input after reload
+                                window.addEventListener('DOMContentLoaded', function() {
+                                    const invoiceInput = document.getElementById('invoiceSearch');
+                                    if (invoiceInput) {
+                                        invoiceInput.focus();
+                                        // Move cursor to end if value exists
+                                        const val = invoiceInput.value;
+                                        invoiceInput.value = '';
+                                        invoiceInput.value = val;
+                                    }
+                                });
+                            </script>
                         </div>
 
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header d-flex align-items-center justify-content-between">
-                                    <h4 class="card-title">Daily Sales History</h4>
-                                    <h2 class="ms-auto">Total: GHC <?= esc($subtotal->sub_total) ?></h2>
+                                    <h4 class="card-title">List of Invoices</h4>
                                 </div>
 
                                 <div class="card-body">
@@ -87,32 +97,34 @@
                                             <thead>
                                                 <tr>
                                                     <th>Invoice</th>
-                                                    <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Unit Price</th>
-                                                    <th>Total</th>
+                                                    <th>Total Products</th>
+                                                    <th>Total Amount</th>
                                                     <th>Sold Date</th>
+                                                    <th>Sales Person</th>
                                                     <th style="width: 10%">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php if ($salesdata): ?>
-                                                    <?php foreach ($salesdata as $prod): ?>
+                                                    <?php foreach ($salesdata as $sale): ?>
                                                         <tr>
-                                                            <td><?= esc($prod->ordernumber) ?></td>
-                                                            <td><?= esc($prod->product->pro_name) ?></td>
-                                                            <td><?= esc($prod->quantity) ?></td>
-                                                            <td>GHC <?= esc($prod->price) ?></td>
-                                                            <td>GHC <?= esc(number_format($prod->price * $prod->quantity, 2)) ?></td>
-                                                            <td><?= esc($prod->datesold) ?></td>
+                                                            <td>
+                                                                <a href="<?= HOME ?>/sales/invoice/<?= esc($sale->ordernumber) ?>">
+                                                                    <?= esc($sale->ordernumber) ?>
+                                                                </a>
+                                                            </td>
+                                                            <td><?= esc($sale->total_products) ?></td>
+                                                            <td><?= esc($sale->total_amount) ?></td>
+                                                            <td><?= esc($sale->datesold) ?></td>
+                                                            <td><?= esc($sale->seller->lastname) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/sales/return/<?= esc($prod->id) ?>"
+                                                                    <a href="<?= HOME ?>/sales/invoice/<?= esc($sale->ordernumber) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title="Edit Task"
                                                                         class="btn btn-link btn-primary btn-lg">
-                                                                        <i class="fa fa-edit"></i>
+                                                                        <i class="fa fa-eye"></i>
                                                                     </a>
                                                                 </div>
                                                             </td>

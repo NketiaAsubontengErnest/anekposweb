@@ -11,11 +11,15 @@ class Home extends Controller
         $data = array();
         $arr = array();
 
+        $shops = new Shop();
+        $prods = new Product();
+
         if (count($_POST) > 0) {
             show($_POST);
             die;
         }
-        $prods = new Product();
+
+        $shops->query("UPDATE `shops` SET `status`= 1 WHERE `enddate` <= CURRENT_DATE");
 
         $data = $prods->findAll();
 

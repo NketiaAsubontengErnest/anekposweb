@@ -30,7 +30,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Add a User</a>
+                                <a href="#">Add and Assing Shop User</a>
                             </li>
                         </ul>
                     </div>
@@ -39,7 +39,7 @@
                             <form method="post">
                                 <div class="card">
                                     <div class="card-header">
-                                        <div class="card-title">Add User</div>
+                                        <div class="card-title">Add and Assing Shop User</div>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
@@ -90,9 +90,7 @@
                                                         class="form-select form-control-lg" id="largeSelect">
                                                         <option value="Sales">Sales</option>
                                                         <option value="Admin">Admin</option>
-                                                        <?php if (Auth::getRank() == 'developer'): ?>
-                                                            <option value="Super Admin">Super Admin</option>
-                                                        <?php endif; ?>
+                                                        <option value="Super Admin">Super Admin</option>
                                                     </select>
                                                     <?php if (isset($errors['rank'])) : ?>
                                                         <code><?= $errors['rank'] ?></code>

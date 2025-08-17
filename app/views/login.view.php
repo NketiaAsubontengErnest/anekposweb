@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title><?=COMPANY?> | Login</title>
+    <title><?= COMPANY ?> | Login</title>
     <meta
         content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
         name="viewport" />
@@ -53,14 +53,25 @@
         <!-- Login Form Section -->
         <h4 class="text-center mb-4">Login</h4>
         <form method="post">
+            <?php if (isset($errors['authlogin'])) : ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= $errors['authlogin'] ?>
+                </div>
+            <?php endif; ?>
             <div class="mb-3">
                 <label for="email" class="form-label">Employee ID</label>
                 <input type="text" class="form-control" name="username" placeholder="Enter your email">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                <div class="input-group">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
+                    <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
             </div>
+
             <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
     </div>
@@ -100,6 +111,25 @@
 
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="<?= ASSETS ?>/js/setting-demo.js"></script>
+    <!-- FontAwesome for icons (if not already included) -->
+
+    <!-- JavaScript for toggling password visibility -->
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            var passwordInput = document.getElementById('password');
+            var icon = this.querySelector('i');
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        });
+    </script>
     <script>
         $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
             type: "line",

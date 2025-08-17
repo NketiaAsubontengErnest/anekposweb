@@ -71,16 +71,24 @@
                                                 <?php if ($rows): ?>
                                                     <?php foreach ($rows as $shop): ?>
                                                         <tr>
-                                                            <td><?=esc($shop->shopname)?></td>
-                                                            <td><?=esc($shop->location)?></td>
-                                                            <td><?=esc($shop->phone)?></td>
-                                                            <td><?=esc($shop->startdate)?></td>
-                                                            <td><?=esc($shop->enddate)?></td>
-                                                            <td><?=esc($shop->years)?></td>
-                                                            <td><?=esc($shop->status == 0 ? 'Active' : 'In-Active')?></td>
+                                                            <td><?= esc($shop->shopname) ?></td>
+                                                            <td><?= esc($shop->location) ?></td>
+                                                            <td><?= esc($shop->phone) ?></td>
+                                                            <td><?= esc($shop->startdate) ?></td>
+                                                            <td><?= esc($shop->enddate) ?></td>
+                                                            <td><?= esc($shop->years) ?></td>
+                                                            <td><?= esc($shop->status == 0 ? 'Active' : 'In-Active') ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
                                                                     <a href="<?= HOME ?>/shops/edit/<?= esc($shop->shopid) ?>"
+                                                                        type="button"
+                                                                        data-bs-toggle="tooltip"
+                                                                        title=""
+                                                                        class="btn btn-link btn-primary btn-lg"
+                                                                        data-original-title="Edit Task">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </a>
+                                                                    <a href="<?= HOME ?>/shops/assign/<?= esc($shop->shopid) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""
@@ -105,7 +113,7 @@
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
                                                     <tr>
-                                                        <td colspan="8" >No Data Found!</td>
+                                                        <td colspan="8">No Data Found!</td>
                                                     </tr>
                                                 <?php endif; ?>
                                             </tbody>

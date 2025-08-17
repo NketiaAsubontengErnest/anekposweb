@@ -36,6 +36,52 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
+                            <!-- Invoice Search Input -->
+                            <div class="form-group col-md-4 col-sm-12">
+                                <label for="searchuser">Search User</label>
+                                <nav
+                                    class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button type="submit" class="btn btn-search pe-1">
+                                                <i class="fa fa-search search-icon"></i>
+                                            </button>
+                                        </div>
+                                        <input
+                                            id="searchuser"
+                                            type="text"
+                                            placeholder="Type Name or Number..."
+                                            value="<?= isset($_GET['searchuser']) ? esc($_GET['searchuser']) : '' ?>"
+                                            class="form-control" />
+                                    </div>
+                                </nav>
+                            </div>
+                            <script>
+                                // Search invoice while typing
+                                document.getElementById('searchuser').addEventListener('input', function() {
+                                    const value = this.value.trim();
+                                    const urlParams = new URLSearchParams(window.location.search);
+                                    if (value) {
+                                        urlParams.set('searchuser', value);
+                                    } else {
+                                        urlParams.delete('searchuser');
+                                    }
+                                    // Retain other filters
+                                    window.location.search = urlParams.toString();
+                                });
+
+                                // Keep cursor in input after reload
+                                window.addEventListener('DOMContentLoaded', function() {
+                                    const invoiceInput = document.getElementById('searchuser');
+                                    if (invoiceInput) {
+                                        invoiceInput.focus();
+                                        // Move cursor to end if value exists
+                                        const val = invoiceInput.value;
+                                        invoiceInput.value = '';
+                                        invoiceInput.value = val;
+                                    }
+                                });
+                            </script>
                         </div>
                         <div class="col-md-12">
                             <div class="card">
@@ -69,46 +115,74 @@
                                             <tbody>
                                                 <?php if ($rows): ?>
                                                     <?php foreach ($rows as $user): ?>
+
                                                         <tr>
-                                                            <td><?=esc($user->username)?></td>
-                                                            <td><?=esc($user->firstname)?></td>
-                                                            <td><?=esc($user->lastname)?></td>
-                                                            <td><?=esc($user->phone)?></td>
-                                                            <td><?=esc(ucfirst($user->rank))?></td>
-                                                            <td><?=esc($user->status == 0 ? 'Active' : 'In-Active')?></td>
+                                                            <td><?= esc($user->username) ?></td>
+                                                            <td><?= esc($user->firstname) ?></td>
+                                                            <td><?= esc($user->lastname) ?></td>
+                                                            <td><?= esc($user->phone) ?></td>
+                                                            <td><?= esc(ucfirst($user->rank)) ?></td>
                                                             <td>
-                                                                <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/users/edit/<?= esc($user->username) ?>"
-                                                                        type="button"
-                                                                        data-bs-toggle="tooltip"
-                                                                        title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
-                                                                        data-original-title="Edit Task">
-                                                                        <i class="fa fa-edit"></i>
-                                                                    </a>
-                                                                    <form method="post">
-                                                                        <button
-                                                                            name="del"
-                                                                            value="<?= esc($user->username) ?>"
-                                                                            data-bs-toggle="tooltip"
-                                                                            title=""
-                                                                            class="btn btn-link btn-danger"
-                                                                            data-original-title="Remove">
-                                                                            <i class="fa fa-times"></i>
-                                                                        </button>
-                                                                    </form>
-                                                                </div>
+                                                                <?php if ($user->status == 0): ?>
+                                                                    <label class="text-success">Active</label>
+                                                                <?php else: ?>
+                                                                    <label class="text-danger">In-Active</label>
+                                                                <?php endif ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php if ($user->rank != 'Super Admin'): ?>
+                                                                    <div class="form-button-action">
+                                                                        <?php if (Auth::access('Super Admin')): ?>
+                                                                            <a href="<?= HOME ?>/users/edit/<?= esc($user->username) ?>"
+                                                                                type="button"
+                                                                                data-bs-toggle="tooltip"
+                                                                                title=""
+                                                                                class="btn btn-link btn-primary btn-lg"
+                                                                                data-original-title="Edit Task">
+                                                                                <i class="fa fa-edit"></i>
+                                                                            </a>
+                                                                            <?php if ($user->status == 0): ?>
+                                                                                <form method="post">
+                                                                                    <input type="hidden" name="status" value="1">
+                                                                                    <button
+                                                                                        name="del"
+                                                                                        value="<?= esc($user->username) ?>"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        title=""
+                                                                                        class="btn btn-link btn-danger"
+                                                                                        data-original-title="Remove">
+                                                                                        <i class="fa fa-times"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <?php else: ?>
+                                                                                <form method="post">
+                                                                                    <input type="hidden" name="status" value="0">
+                                                                                    <button
+                                                                                        name="del"
+                                                                                        value="<?= esc($user->username) ?>"
+                                                                                        data-bs-toggle="tooltip"
+                                                                                        title=""
+                                                                                        class="btn btn-link btn-success"
+                                                                                        data-original-title="Remove">
+                                                                                        <i class="fa fa-check"></i>
+                                                                                    </button>
+                                                                                </form>
+                                                                            <?php endif; ?>
+                                                                        <?php endif ?>
+                                                                    </div>
+                                                                <?php endif; ?>
                                                             </td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
                                                     <tr>
-                                                        <td colspan="7" >No Data Found!</td>
+                                                        <td colspan="7">No Data Found!</td>
                                                     </tr>
                                                 <?php endif; ?>
                                             </tbody>
                                         </table>
                                     </div>
+                                    <?php $pager->display($rows ? count($rows) : 0); ?>
                                 </div>
                             </div>
                         </div>

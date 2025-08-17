@@ -37,8 +37,8 @@
                                 <div class="card-header">
                                     <div class="card-header d-flex align-items-center justify-content-between">
                                         <?php if ($row): ?>
-                                            <h4 class="fw-bold mb-3"><?= esc($row->customer->custname . ', ' .  $row->customer->custlocation . ' - ' . $row->customer->custphone) ?> Debts</h4>
-                                            <h2 class="ms-auto">Total: GHC <?= esc($row->customer->customer_total_debt->total_debt - $row->customer->customer_total_pay->total_pay) ?></h2>
+                                            <h4 class="fw-bold mb-3"><?= esc($row->custname . ', ' .  $row->custlocation . ' - ' . $row->custphone) ?> Debts</h4>
+                                            <h2 class="ms-auto">Total: GHC <?= esc($row->customer_total_debt->total_debt - $row->customer_total_pay->total_pay) ?></h2>
                                         <?php else: ?>
                                             <h4 class="fw-bold mb-3">Customers Debts</h4>
                                         <?php endif; ?>
@@ -62,18 +62,18 @@
                                                 <?php if ($rows): ?>
                                                     <?php foreach ($rows as $debt): ?>
                                                         <tr>
-                                                            <td><?= esc($debt->invoicenum) ?></td>
+                                                            <td><a href="<?= HOME ?>/sales/invoice/<?= $debt->invoicenum ?>"><?= esc($debt->invoicenum) ?></a></td>
                                                             <td><?= esc($debt->amount) ?></td>
                                                             <td><?= esc($debt->date) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/customers/paydebt/<?= esc($debt->id) ?>?invoice=<?=esc($debt->invoicenum)?>&custid=<?=esc($debt->custid)?>"
+                                                                    <a href="<?= HOME ?>/customers/paydebt/<?= esc($debt->id) ?>?invoice=<?= esc($debt->invoicenum) ?>&custid=<?= esc($debt->custid) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""
                                                                         class="btn btn-link btn-primary btn-lg"
                                                                         data-original-title="Edit Task">
-                                                                        <i class="fa fa-edit"></i>
+                                                                        <i class="fa fa-edit"> Pay</i>
                                                                     </a>
                                                                 </div>
                                                             </td>
