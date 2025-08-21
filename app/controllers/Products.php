@@ -19,12 +19,36 @@ class Products extends Controller
         $products = new Product();
 
         if (count($_POST) > 0) {
-            if ($products->validate($_POST)) {
+            if (isset($_POST['export'])) {
+                $data = $products->query('SELECT * FROM `products` WHERE `shopid` = :shopid', ['shopid' => Auth::getShop()->shopid]);
+                $filename = "products_" . date('Y-m-d') . ".csv";
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                $output = fopen('php://output', 'w');
+                fputcsv($output, ['Barcode', 'Product Name', 'Quantity', 'Cost Price', 'Selling Price']);
+                foreach ($data as $row) {
+                    fputcsv(
+                        $output,
+                        [
+                            $row->barcode,
+                            $row->pro_name,
+                            $row->quantity,
+                            $row->cost_price,
+                            $row->selling_price
+                        ]
+                    );
+                }
+                fclose($output);
+                exit;
+            } elseif ($products->validate($_POST)) {
+
                 $products->insert($_POST);
+
                 $_SESSION['messsage'] = "Product Added Successfully";
                 $_SESSION['status_code'] = "success";
                 $_SESSION['status_headen'] = "Good job!";
             } else {
+
                 $_SESSION['messsage'] = "Product Not Added!";
                 $_SESSION['status_code'] = "warning";
                 $_SESSION['status_headen'] = "Check Well!";
@@ -46,7 +70,7 @@ class Products extends Controller
         $actives = 'products';
         $link = 'list';
         $hiddenSearch = "";
-        return $this->view('products/products', [
+        return $this->view('products/index', [
             'rows' => $data,
             'hiddenSearch' => $hiddenSearch,
             'pager' => $pager,
@@ -103,7 +127,7 @@ class Products extends Controller
         $crumbs[] = ['Books', ''];
         $actives = 'add';
         $hiddenSearch = "";
-        return $this->view('products/products.add', [
+        return $this->view('products/add', [
             'rows' => $data,
             'catrows' => $catdata,
             'hiddenSearch' => $hiddenSearch,
@@ -153,7 +177,7 @@ class Products extends Controller
         $crumbs[] = ['Books', ''];
         $actives = 'add';
         $hiddenSearch = "";
-        return $this->view('products/products.edit', [
+        return $this->view('products/edit', [
             'row' => $data,
             'catrows' => $catdata,
             'hiddenSearch' => $hiddenSearch,
@@ -211,7 +235,7 @@ class Products extends Controller
         $actives = 'products';
         $link = 'category';
         $hiddenSearch = "";
-        return $this->view('products/products.category', [
+        return $this->view('products/category', [
             'rows' => $data,
             'hiddenSearch' => $hiddenSearch,
             'pager' => $pager,
@@ -299,7 +323,7 @@ class Products extends Controller
         $actives = 'products';
         $link = 'updates';
         $hiddenSearch = "";
-        return $this->view('products/products.update', [
+        return $this->view('products/update', [
             'rows' => $data,
             'hiddenSearch' => $hiddenSearch,
             'pager' => $pager,
@@ -352,7 +376,7 @@ class Products extends Controller
         $actives = 'products';
         $link = 'updates';
         $hiddenSearch = "";
-        return $this->view('products/products.quantupdate', [
+        return $this->view('products/quantupdate', [
             'row' => $data,
             'hiddenSearch' => $hiddenSearch,
             'pager' => $pager,

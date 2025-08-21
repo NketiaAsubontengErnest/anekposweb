@@ -140,6 +140,30 @@ class suppliers extends Controller
         $suppliers = new Supplier();
 
         if (count($_POST) > 0) {
+            if (isset($_POST['export'])) {
+                $debtdats = $supldebts->where_query("SELECT DISTINCT suplid, SUM(amount) AS amount FROM `supplierdebts` WHERE `shopid` =:shopid", ['shopid' => Auth::getShop()->shopid]);
+                $filename = "Supplyiers_" . date('Y-m-d') . ".csv";
+                header("Content-Type: application/vnd.ms-excel");
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                $output = fopen('php://output', 'w');
+                fputcsv($output, ['Supplier Name', 'Phone', 'Total Debt', 'Total Pay', 'Remaining Debt']);
+                foreach ($debtdats as $row) {
+                    fputcsv(
+                        $output,
+                        [
+                            $row->supplyer->suplname,
+                            $row->supplyer->suplphone,
+                            $row->supplyer->supplyer_total_debt->total_debt,
+                            $row->supplyer->supplyer_total_pay->total_pay,
+                            $row->supplyer->supplyer_total_debt->total_debt - $row->supplyer->supplyer_total_pay->total_pay
+                        ]
+                    );
+                }
+                fclose($output);
+                exit;
+            }
+
             $_POST['userid'] = Auth::getUsername();
             $_POST['shopid'] = Auth::getShop()->shopid;
             $supldebts->insert($_POST);
@@ -166,6 +190,7 @@ class suppliers extends Controller
         $this->view('suppliers/debts', [
             'rows' => $data,
             'rowsdebt' => $debtdats,
+            'pager' => $pager,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,

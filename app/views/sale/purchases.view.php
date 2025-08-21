@@ -15,7 +15,7 @@
                         <h3 class="fw-bold mb-3">Reports</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
-                                <a href="#">
+                                <a href="<?= HOME ?>/dashboard">
                                     <i class="icon-home"></i>
                                 </a>
                             </li>
@@ -23,7 +23,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Forms</a>
+                                <a href="<?= HOME ?>/sales">Sales</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
@@ -84,6 +84,24 @@
                                                 <?php endif; ?>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <?php $pager->display($rows ? count($rows) : 0); ?>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="d-flex align-items-center">
+                                                <?php if (Auth::access('Admin')): ?>
+                                                    <form action="" method="post">
+                                                        <button name="export"
+                                                            class="btn btn-success btn-round ms-auto">
+                                                            <i class="fa fa-download"></i>
+                                                            Export to Excel
+                                                        </button>
+                                                    </form>
+                                                <?php endif ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

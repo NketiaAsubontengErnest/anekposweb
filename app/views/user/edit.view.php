@@ -24,12 +24,6 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Forms</a>
-                            </li>
-                            <li class="separator">
-                                <i class="icon-arrow-right"></i>
-                            </li>
-                            <li class="nav-item">
                                 <a href="#">Edit a User</a>
                             </li>
                         </ul>
@@ -38,8 +32,28 @@
                         <div class="col-md-12">
                             <form method="post">
                                 <div class="card">
+
                                     <div class="card-header">
-                                        <div class="card-title">Edit User</div>
+                                        <div class="d-flex align-items-center">
+                                            <h4 class="card-title">Edit User</h4>
+                                            <a href="#"
+                                                class="btn btn-white btn-round ms-auto">
+
+                                            </a>
+
+                                            <form action="" method="post">
+                                                <button
+                                                    name="resetpass"
+                                                    value="<?= esc($row->username) ?>"
+                                                    data-bs-toggle="tooltip"
+                                                    title=""
+                                                    class="btn btn-warning btn-round ms-auto"
+                                                    data-original-title="Remove">
+                                                    <i class="fa fa-refresh"> </i>
+                                                    Reset Password
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                     <?php if ($row): ?>
                                         <div class="card-body">
@@ -112,7 +126,7 @@
                                         </div>
                                         <div class="card-action">
                                             <button class="btn btn-primary">Update User</button>
-                                            <a href="<?= HOME ?>/users" class="btn btn-danger">Cancel</a>
+                                            <a href="<?= Auth::getRank() == 'developer' ? HOME . '/shops/edit/' . $row->shopid : HOME . '/users'  ?>" class="btn btn-danger">Cancel</a>
                                         </div>
                                     <?php else: ?>
                                         NO DATA FOUND!

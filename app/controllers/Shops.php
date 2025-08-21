@@ -77,6 +77,28 @@ class Shops extends Controller
                 $_POST['enddate'] = date_format($date, "Y-m-d");
                 $_POST['shopid'] = generateRandomCode(55);
 
+                if (count($_FILES) > 0) {
+                    $allowed[] = "image/jpeg";
+                    $allowed[] = "image/jpg";
+                    $allowed[] = "image/png";
+                    //Uploading certificate
+                    if ($_FILES['logo']['error'] == 0 && in_array($_FILES['logo']['type'], $allowed)) {
+
+                        $certificateFolder = "public/logo/";
+                        if (!file_exists($certificateFolder)) mkdir($certificateFolder, 0777, true);
+
+                        $certificateFolder = "logo/";
+                        $newFileName = $_POST['shopid'] . "_logo.jpg"; // always JPG
+                        $destination = "public/" . $certificateFolder . $newFileName;
+
+                        $processedImage = cropAndResizeToJPG($_FILES['logo']['tmp_name'], $destination, 400, 80);
+
+                        if ($processedImage) {
+                            $_POST['logo'] = $certificateFolder . $newFileName;
+                        }
+                    }
+                }
+
                 $shops->insert($_POST);
                 $wallets->insert($_POST);
 
@@ -112,12 +134,43 @@ class Shops extends Controller
             $this->redirect('login');
         }
 
+        $limit = 15;
+        $pager = new Pager($limit);
+        $offset = $pager->offset;
+
         $data = array();
 
         $shops = new Shop();
+        $users = new User();
 
         if (count($_POST) > 0) {
+            if (count($_FILES) > 0) {
+                $allowed[] = "image/jpeg";
+                $allowed[] = "image/jpg";
+                $allowed[] = "image/png";
+                //Uploading certificate
+                if ($_FILES['logo']['error'] == 0 && in_array($_FILES['logo']['type'], $allowed)) {
+
+
+                    $certificateFolder = "public/logo/";
+                    if (!file_exists($certificateFolder)) mkdir($certificateFolder, 0777, true);
+
+                    $certificateFolder = "logo/";
+                    $newFileName = $id . "_logo.jpg"; // always JPG
+                    $destination = "public/" . $certificateFolder . $newFileName;
+
+                    $processedImage = cropAndResizeToJPG($_FILES['logo']['tmp_name'], $destination, 400, 80);
+
+                    if ($processedImage) {
+                        $_POST['logo'] = $certificateFolder . $newFileName;
+                    }
+                }
+            } else {
+                unset($_POST['logo']);
+            }
+
             $shops->update($id, $_POST, 'shopid');
+
 
             $_SESSION['messsage'] = "Shop Update Successfully";
             $_SESSION['status_code'] = "success";
@@ -125,6 +178,10 @@ class Shops extends Controller
 
             return $this->redirect('shops');
         }
+
+        $adminData = $users->query("SELECT * FROM `users` WHERE `shopid` = :shopid LIMIT $limit OFFSET $offset", [
+            'shopid' => $id
+        ]);
 
         $data = $shops->where('shopid', $id)[0];
 
@@ -135,6 +192,8 @@ class Shops extends Controller
         $this->view('shop/edit', [
             'row' => $data,
             'crumbs' => $crumbs,
+            'adminData' => $adminData ?? [],
+            'pager' => $pager,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
             'link' => $link

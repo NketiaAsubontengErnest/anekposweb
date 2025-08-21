@@ -36,7 +36,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="post">
+                            <form method="post" enctype="multipart/form-data">
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">Add Shop</div>
@@ -136,7 +136,85 @@
                                                         <code><?= $errors['initials'] ?></code>
                                                     <?php endif; ?>
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <h4>Logo</h4>
+                                                    <form class="forms-sample" method="POST" enctype="multipart/form-data">
+
+                                                        <!-- Show old image first -->
+                                                        <img
+                                                            src=""
+                                                            id="imageDisplay"
+                                                            class="d-block mx-auto border border-primary mb-1"
+                                                            style="width:120px; height:120px; object-fit:cover; border-radius:50%"
+                                                            alt="">
+
+                                                        <!-- File input -->
+                                                        <input
+                                                            type="file"
+                                                            class="form-control mt-2"
+                                                            name="logo"
+                                                            id="fileInput"
+                                                            accept="image/*"
+                                                            required>
+
+                                                        <!-- Server-side error -->
+                                                        <?php if (isset($errors['logo'])): ?>
+                                                            <div class="alert alert-warning alert-dismissible mt-2" role="alert">
+                                                                <?= $errors['logo'] ?>
+                                                            </div>
+                                                        <?php endif; ?>
+
+                                                        <!-- File info -->
+                                                        <small class="file_info text-muted d-block mt-1"></small>
+                                                    </form>
+                                                </div>
+
+                                                <script>
+                                                    $(function() {
+                                                        // Keep old image in memory
+                                                        const oldImage = $('#imageDisplay').attr('src');
+
+                                                        $('#fileInput').on('change', function() {
+                                                            const input = this;
+                                                            const file = input.files && input.files[0] ? input.files[0] : null;
+
+                                                            if (!file) {
+                                                                // If user cancels → revert back to old image
+                                                                $('#imageDisplay').attr('src', oldImage);
+                                                                $('.file_info').text('');
+                                                                return;
+                                                            }
+
+                                                            // Validate type
+                                                            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                                                            if ($.inArray(file.type, validTypes) === -1) {
+                                                                alert('Please select an image (JPG, PNG, GIF, or WEBP).');
+                                                                $(input).val(''); // reset input
+                                                                $('#imageDisplay').attr('src', oldImage); // revert
+                                                                return;
+                                                            }
+
+                                                            // Validate size (< 3 MB)
+                                                            if (file.size > 3 * 1024 * 1024) {
+                                                                alert('Image size must be less than 3 MB.');
+                                                                $(input).val('');
+                                                                $('#imageDisplay').attr('src', oldImage);
+                                                                return;
+                                                            }
+
+                                                            // Preview new file
+                                                            const reader = new FileReader();
+                                                            reader.onload = function(e) {
+                                                                $('#imageDisplay').attr('src', e.target.result);
+                                                                $('.file_info').text('New File: ' + file.name + ' (' + (file.size / 1048576).toFixed(2) + ' MB)');
+                                                            };
+                                                            reader.readAsDataURL(file);
+                                                        });
+                                                    });
+                                                </script>
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="card-action">

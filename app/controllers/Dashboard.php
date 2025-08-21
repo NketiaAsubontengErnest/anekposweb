@@ -16,6 +16,7 @@ class Dashboard extends Controller
         $users = new User();
         $products = new Product();
         $categories = new Category();
+        $salesData = [];
 
         $data = [
             'totalVisitors' => 0,
@@ -25,9 +26,9 @@ class Dashboard extends Controller
             'totalRevenue' => 0,
             'salesWeeklyGraph' => [],
             'salesMonthlyGraph' => [],
+            'totalShops' => 0,
             'totalUsers' => 0,
             'totalCategories' => 0,
-            'totalShops' => 0,
             'totalPendingOrders' => 0,
             'totalCompletedOrders' => 0,
             'totalCancelledOrders' => 0,
@@ -40,20 +41,31 @@ class Dashboard extends Controller
             'current' => date('Y-m-d')
         ]);
 
-        if (Auth::getRank() == 'developer') {
-            $data['shops'] = $shops->where('status', 1);
+        if (Auth::access('developer')) {
+            $data['totalShops'] = $shops->selectCount()[0]->numbers;
+            $data['totalExpireShops'] = $shops->selectCountWhere('status', 1)[0]->numbers;
         } else {
 
             $data['totalVisitors'] = $sales->query("SELECT COUNT(`ordernumber`) AS totalVisitors FROM `sales` WHERE `datesold` =:datesold AND `shopid` =:shopid GROUP BY `ordernumber`", [
                 'datesold' => date('Y-m-d'),
                 'shopid' => Auth::getShopid()
-            ])[0]->totalVisitors ?: 0;
+            ]);
+
+            if (empty($data['totalVisitors'])) {
+                $data['totalVisitors'] = 0;
+            } else {
+                $data['totalVisitors'] = count($data['totalVisitors']);
+            }
 
             $data['totalCustomers'] = $sales->query("SELECT COUNT(*) AS totalCustomers FROM `customers` WHERE `shopid` =:shopid", [
                 'shopid' => Auth::getShopid()
-            ])[0]->totalCustomers ?: 0;
+            ]);
 
-
+            if (empty($data['totalCustomers'])) {
+                $data['totalCustomers'] = 0;
+            } else {
+                $data['totalCustomers'] = $data['totalCustomers'][0]->totalCustomers ?: 0;
+            }
 
             $data['totalProducts'] = $products->query("SELECT COUNT(*) AS totalProducts FROM `products` WHERE `shopid` =:shopid", [
                 'shopid' => Auth::getShopid()
@@ -70,7 +82,13 @@ class Dashboard extends Controller
                     'sunday' => $sunday,
                     'shopid' => Auth::getShopid()
                 ]
-            )[0]->totalRevenue ?: 0;
+            );
+
+            if (empty($data['totalRevenue'])) {
+                $data['totalRevenue'] = 0;
+            } else {
+                $data['totalRevenue'] = $data['totalRevenue'][0]->totalRevenue ?: 0;
+            }
 
             // Prepare sales data for graph (e.g., sales per day for current week, with Mon, Tue, ...)
             $weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -90,13 +108,15 @@ class Dashboard extends Controller
             );
 
             // Map dates to day names
-            foreach ($salesData as $row) {
-                $dayName = date('D', strtotime($row->date));
-                if (in_array($dayName, $weekDays)) {
-                    $salesGraph[$dayName] = $row->total ?: 0;
+            if ($salesData) {
+                foreach ($salesData as $row) {
+                    $dayName = date('D', strtotime($row->date));
+                    if (in_array($dayName, $weekDays)) {
+                        $salesGraph[$dayName] = $row->total ?: 0;
+                    }
                 }
+                $data['salesWeeklyGraph'] = $salesGraph;
             }
-            $data['salesWeeklyGraph'] = $salesGraph;
 
             // Prepare sales data for monthly graph
             $currentMonth = date('Y-m');

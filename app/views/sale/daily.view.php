@@ -15,7 +15,7 @@
                         <h3 class="fw-bold mb-3">Daily</h3>
                         <ul class="breadcrumbs mb-3">
                             <li class="nav-home">
-                                <a href="#">
+                                <a href="<?= HOME ?>/dashboard">
                                     <i class="icon-home"></i>
                                 </a>
                             </li>
@@ -23,7 +23,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Forms</a>
+                                <a href="<?= HOME ?>/sales">Sales</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
@@ -107,12 +107,12 @@
                                                             <td><?= esc($prod->datesold) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/sales/return/<?= esc($prod->id) ?>"
+                                                                    <a href="<?= HOME ?>/sales/returnSale/<?= esc($prod->id) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title="Edit Task"
                                                                         class="btn btn-link btn-primary btn-lg">
-                                                                        <i class="fa fa-edit"></i>
+                                                                        <i class="fa fa-undo"></i>
                                                                     </a>
                                                                 </div>
                                                             </td>

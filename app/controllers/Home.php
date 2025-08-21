@@ -7,28 +7,39 @@ class Home extends Controller
 {
     function index()
     {
-        $data1 = array();
-        $data = array();
-        $arr = array();
-
         $shops = new Shop();
-        $prods = new Product();
 
         if (count($_POST) > 0) {
-            show($_POST);
-            die;
+            $message = new Message();
+            if ($message->validate($_POST)) {
+                $_POST['name'] = htmlspecialchars($_POST['name']);
+                $_POST['email'] = htmlspecialchars($_POST['email']);
+                $_POST['subject'] = htmlspecialchars($_POST['subject']);
+                $_POST['message'] = htmlspecialchars($_POST['message']);
+
+                $_POST['name'] = trim($_POST['name']);
+                $_POST['email'] = trim($_POST['email']);
+                $_POST['subject'] = trim($_POST['subject']);
+                $_POST['message'] = trim($_POST['message']);
+                $_POST['sentdatetime'] = date('Y-m-d H:i:s');
+
+                $message->insert($_POST);
+
+                $_SESSION['messsage'] = "Message Sent Successfully. We will get back to you soon.";
+                $_SESSION['status_code'] = "success";
+                $_SESSION['status_headen'] = "Good job!";
+
+
+                return $this->redirect('index');
+            }
         }
 
         $shops->query("UPDATE `shops` SET `status`= 1 WHERE `enddate` <= CURRENT_DATE");
-
-        $data = $prods->findAll();
 
         $actives = 'home';
         $hiddenSearch  = '';
         $crumbs  = array();
         $this->view('index', [
-            'rows1' => $data1,
-            'productdata' => $data,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives

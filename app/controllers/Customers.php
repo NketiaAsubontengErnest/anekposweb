@@ -150,6 +150,29 @@ class Customers extends Controller
         $customers = new Customer();
 
         if (count($_POST) > 0) {
+            if (isset($_POST['export'])) {
+                $debtdats = $custdebts->where_query("SELECT DISTINCT custid, SUM(amount) AS amount FROM `customerdebts` WHERE `shopid` =:shopid", ['shopid' => Auth::getShop()->shopid]);
+                $filename = "Debtors_" . date('Y-m-d') . ".csv";
+                header("Content-Type: application/vnd.ms-excel");
+                header('Content-Type: text/csv');
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                $output = fopen('php://output', 'w');
+                fputcsv($output, ['Customer Name', 'Total Debt', 'Total Paid', 'Total Bal.']);
+                foreach ($debtdats as $row) {
+                    fputcsv(
+                        $output,
+                        [
+                            $row->customer->custname,
+                            $row->customer->customer_total_debt->total_debt,
+                            $row->customer->customer_total_pay->total_pay,
+                            $row->customer->customer_total_debt->total_debt - $row->customer->customer_total_pay->total_pay
+                        ]
+                    );
+                }
+                fclose($output);
+                exit;
+            }
+
             $_POST['userid'] = Auth::getUsername();
             $_POST['shopid'] = Auth::getShop()->shopid;
             $custdebts->insert($_POST);

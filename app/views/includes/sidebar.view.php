@@ -47,29 +47,54 @@
                     </li>
                 <?php endif ?>
 
-                <li class="nav-item">
-                    <?php if (Auth::access('developer')): ?>
+                <?php if (Auth::access('developer')): ?>
+                    <li class="nav-item <?= $actives == 'shop' ? 'active' : '' ?>">
                         <a data-bs-toggle="collapse" href="#base">
                             <i class="fas fa-layer-group"></i>
                             <p>Shops</p>
                             <span class="caret"></span>
                         </a>
-                    <?php endif ?>
-                    <div class="collapse" id="base">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="<?= HOME ?>/shops">
-                                    <span class="sub-item">Shops List</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="<?= HOME ?>/shops/expire">
-                                    <span class="sub-item">Expire Shops</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+                        <div class="collapse" id="base">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="<?= HOME ?>/shops">
+                                        <span class="sub-item">Shops List</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="<?= HOME ?>/shops/expire">
+                                        <span class="sub-item">Expire Shops</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item <?= $actives == 'messages' ? 'active submenu' : '' ?>">
+                        <a data-bs-toggle="collapse" href="#messages">
+                            <i class="fas fa-comments"></i>
+                            <p>Messages</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="messages">
+                            <ul class="nav nav-collapse">
+
+                                <li class="<?= $link == 'messageslist' ? 'active' : '' ?>">
+                                    <a href="<?= HOME ?>/messages">
+                                        <span class="sub-item">New Messages</span>
+                                    </a>
+                                </li>
+
+                                <li class="<?= $link == 'messagesread' ? 'active' : '' ?>">
+                                    <a href="<?= HOME ?>/messages/read">
+                                        <span class="sub-item">Read Messages</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                <?php endif ?>
                 <li class="nav-item <?= $actives == 'salesreport' ? 'active' : '' ?>">
                     <?php if (Auth::access('Sales') && !Auth::access('developer')): ?>
                         <a data-bs-toggle="collapse" href="#sidebarLayouts">
@@ -99,7 +124,7 @@
                     </div>
                 </li>
 
-                <li class="nav-item <?= $actives == 'products' ? 'active submenu' : '' ?>">
+                <li class="nav-item <?= $actives == 'products' ? 'active' : '' ?>">
                     <?php if (Auth::access('Super Admin') && !Auth::access('developer')): ?>
                         <a data-bs-toggle="collapse" href="#tables">
                             <i class="fas fa-table"></i>
@@ -109,24 +134,19 @@
                     <?php endif ?>
                     <div class="collapse" id="tables">
                         <ul class="nav nav-collapse">
-                            <li class="<?= $link == 'category' ? 'active' : '' ?>">
-                                <a href="<?= HOME ?>/products/category">
-                                    <span class="sub-item">Categories</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="<?= HOME ?>/products/update">
-                                    <span class="sub-item">Update Product</span>
-                                </a>
-                            </li>
                             <li class="<?= $link == 'list' ? 'active' : '' ?>">
                                 <a href="<?= HOME ?>/products">
                                     <span class="sub-item">Products</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="<?= HOME ?>/products/return">
-                                    <span class="sub-item">Return Product</span>
+                            <li class="<?= $link == 'category' ? 'active' : '' ?>">
+                                <a href="<?= HOME ?>/products/category">
+                                    <span class="sub-item">Categories</span>
+                                </a>
+                            </li>
+                            <li class="<?= $link == 'updates' ? 'active' : '' ?>">
+                                <a href="<?= HOME ?>/products/update">
+                                    <span class="sub-item">Update Product</span>
                                 </a>
                             </li>
                         </ul>

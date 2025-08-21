@@ -92,6 +92,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Customer Name</th>
+                                                    <th>Phone</th>
                                                     <th>Total Debt</th>
                                                     <th>Total Paid</th>
                                                     <th>Total Bal.</th>
@@ -107,6 +108,7 @@
                                                                     <?= esc($debt->supplyer->suplname . ', ' .  $debt->supplyer->supllocation . ' - ' . $debt->supplyer->suplphone) ?>
                                                                 </a>
                                                             </td>
+                                                            <td><a href="tel:<?= esc($debt->supplyer->suplphone) ?>"><?= esc($debt->supplyer->suplphone) ?></a></td>
                                                             <td><?= esc(number_format($debt->amount, 2)) ?></td>
                                                             <td><?= esc(number_format($debt->supplyer->supplyer_total_pay->total_pay, 2)) ?></td>
                                                             <td><?= esc(number_format($debt->amount - $debt->supplyer->supplyer_total_pay->total_pay, 2)) ?></td>
@@ -131,6 +133,24 @@
                                                 <?php endif; ?>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <?php $pager->display($rowsdebt ? count($rowsdebt) : 0); ?>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="d-flex align-items-center">
+                                                <?php if (Auth::access('Admin')): ?>
+                                                    <form action="" method="post">
+                                                        <button name="export"
+                                                            class="btn btn-success btn-round ms-auto">
+                                                            <i class="fa fa-download"></i>
+                                                            Export to Excel
+                                                        </button>
+                                                    </form>
+                                                <?php endif ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

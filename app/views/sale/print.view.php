@@ -23,7 +23,7 @@
         }
 
         h2 {
-            text-align: center;
+            text-align: right;
             letter-spacing: 2px;
             margin-bottom: 5px;
             color: #333;
@@ -114,23 +114,43 @@
 <body>
 
     <div class="invoice-container">
-        <h2>Invoice</h2>
-        <h2><?= $shop->shopname ?></h2>
-        <?php if (!empty($shop->image)): ?>
-            <div style="text-align:center; margin-bottom:16px;">
-                <img src="<?= htmlspecialchars($shop->image) ?>" alt="Shop Logo" style="max-width:120px; max-height:120px; border-radius:8px;">
+        <!-- Invoice Header -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+
+            <!-- Logo on the left -->
+            <?php if (!empty($shop->logo)):
+                $imageUrl = "";
+                if ($shop->logo) {
+                    $imageUrl = ROOT . "/" . $shop->logo;
+                }
+            ?>
+                <div style="flex-shrink: 0;">
+                    <img src="<?= esc($imageUrl) ?>" alt="Shop Logo" style="max-width:100px; max-height:100px; border-radius:8px;">
+                </div>
+            <?php endif; ?>
+
+            <!-- Shop name + Invoice on the right -->
+            <div style="text-align: right;">
+                <h2 style="margin: 0;">Invoice</h2>
+                <h2 style="margin: 0;"><?= $shop->shopname ?></h2>
             </div>
-        <?php endif; ?>
-        <div class="invoice-details" style="display: flex; flex-wrap: wrap; gap: 32px;">
-            <div style="flex: 1;">
+        </div>
+
+        <!-- Invoice Details -->
+        <div class="invoice-details" style="display: flex; flex-wrap: wrap; gap: 32px; margin-bottom: 20px;">
+            <div style="flex: 1; min-width: 200px;">
                 <p><strong>Date:</strong> <?= date("Y-m-d") ?></p>
                 <p><strong>Order Number:</strong> <?= $sales[0]->ordernumber ?></p>
             </div>
-            <div style="flex: 1;">
+            <div style="flex: 1; min-width: 200px;">
                 <p><strong>Customer:</strong> <?= $customer ?></p>
-                <p><strong>Attendant:</strong> <?= Auth::getFirstname() ?> <?= Auth::getLastname() ?> - <b><?= Auth::getUsername() ?></b></p>
+                <p><strong>Attendant:</strong>
+                    <?= Auth::getFirstname() ?> <?= Auth::getLastname() ?>
+                    - <b><?= Auth::getUsername() ?></b>
+                </p>
             </div>
         </div>
+
 
         <table style="border: 1px solid #ccc;">
             <tr>

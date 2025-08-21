@@ -20,11 +20,11 @@
                         <?php if (Auth::access('developer')): ?>
                             <div class="ms-md-auto py-2 py-md-0">
                                 <a href="<?= HOME ?>/#" class="btn btn-label-info btn-round me-2">Manage</a>
-                                <a href="<?= HOME ?>/#" class="btn btn-primary btn-round">Add Customer</a>
+                                <a href="<?= HOME ?>/shops/add" class="btn btn-primary btn-round">Add Shop</a>
                             </div>
                         <?php endif; ?>
                     </div>
-                    <?php if (Auth::getRanks() == 'developer'): ?>
+                    <?php if (Auth::access('developer')): ?>
                         <div class="row">
                             <div class="col-sm-6 col-md-3">
                                 <div class="card card-stats card-round">
@@ -33,13 +33,13 @@
                                             <div class="col-icon">
                                                 <div
                                                     class="icon-big text-center icon-primary bubble-shadow-small">
-                                                    <i class="fas fa-users"></i>
+                                                    <i class="fa fa-university"></i>
                                                 </div>
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Visitors</p>
-                                                    <h4 class="card-title">1,294</h4>
+                                                    <p class="card-category">Total Shops</p>
+                                                    <h4 class="card-title"><?= number_format($rows['totalShops']) ?></h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -53,13 +53,13 @@
                                             <div class="col-icon">
                                                 <div
                                                     class="icon-big text-center icon-info bubble-shadow-small">
-                                                    <i class="fas fa-user-check"></i>
+                                                    <i class="fa fa-times text-danger"></i>
                                                 </div>
                                             </div>
                                             <div class="col col-stats ms-3 ms-sm-0">
                                                 <div class="numbers">
-                                                    <p class="card-category">Subscribers</p>
-                                                    <h4 class="card-title">1303</h4>
+                                                    <p class="card-category">Total Expire Shops</p>
+                                                    <h4 class="card-title"><?= number_format($rows['totalExpireShops']) ?></h4>
                                                 </div>
                                             </div>
                                         </div>
@@ -369,7 +369,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card card-round">
+                                <!-- <div class="card card-round">
                                     <div class="card-body pb-0">
                                         <div class="h1 fw-bold float-end text-primary">+5%</div>
                                         <h2 class="mb-2">17</h2>
@@ -378,7 +378,7 @@
                                             <div id="lineChart"></div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     <?php endif; ?>

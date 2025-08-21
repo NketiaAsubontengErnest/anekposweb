@@ -106,6 +106,18 @@ class User extends Model
       return false;
    }
 
+   public function resetPassword($username)
+   {
+      if (!empty($username)) {
+         $data['password'] = password_hash($username, PASSWORD_DEFAULT);
+         $data['username'] = $username;
+
+         $this->query("UPDATE `users` SET `password` = :password WHERE `username` = :username", $data);
+         return true;
+      }
+      return false;
+   }
+
    public function get_Shop($data)
    {
       $shops = new Shop();

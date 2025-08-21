@@ -41,10 +41,8 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-            <a href="index.html" class="logo d-flex align-items-center me-auto">
-                <!-- Uncomment the line below if you also wish to use an image logo -->
-                <!-- <img src="<?= ASSETS ?>/img/logo.png" alt=""> -->
-                <img src="<?= ASSETS ?>/img/kaiadmin/logo_light.png" alt="">
+            <a href="index.html" class="d-flex align-items-center me-auto">
+                <img src="<?= ASSETS ?>/img/kaiadmin/logo_light.png" style="height: 60px" alt="">
             </a>
 
             <nav id="navmenu" class="navmenu">
@@ -79,7 +77,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-                        <img src="<?= ASSETS ?>/img/hero-img.png" class="img-fluid animated" alt="">
+                        <img src="<?= ASSETS ?>/img/hero-img.png" class="img-fluid animated" height="60" alt="">
                     </div>
                 </div>
             </div>
@@ -120,27 +118,6 @@
 
         </section><!-- /About Section -->
 
-        <!-- Why Us Section -->
-        <section id="why-us" class="section why-us light-background" data-builder="section">
-
-            <div class="container-fluid">
-
-                <div class="row gy-4">
-
-                    <div class="col-lg-7 d-flex flex-column justify-content-center order-2 order-lg-1">
-
-
-
-                    </div>
-
-                    <div class="col-lg-5 order-1 order-lg-2 why-us-img">
-                        <img src="<?= ASSETS ?>/img/why-us.png" class="img-fluid" alt="" data-aos="zoom-in" data-aos-delay="100">
-                    </div>
-                </div>
-
-            </div>
-
-        </section><!-- /Why Us Section -->
 
         <!-- Skills Section -->
         <section id="skills" class="skills section">
@@ -150,7 +127,7 @@
                 <div class="row">
 
                     <div class="col-lg-6 d-flex align-items-center">
-                        <img src="<?= ASSETS ?>/img/skills.png" class="img-fluid" alt="">
+                        <img src="<?= ASSETS ?>/img/why-us.png" class="img-fluid" alt="">
                     </div>
 
                     <div class="col-lg-6 pt-4 pt-lg-0 content">
@@ -241,7 +218,7 @@
                         <div class="service-item position-relative">
                             <div class="icon"><i class="bi bi-bounding-box-circles icon"></i></div>
                             <h4><a href="" class="stretched-link">Graphics Design</a></h4>
-                            <p>Get you bussines design for marketing and more.</p>
+                            <p>Get you bussines design for marketing and more within a shortest time.</p>
                         </div>
                     </div><!-- End Service Item -->
 
@@ -321,14 +298,14 @@
                         <div class="team-member d-flex align-items-start">
                             <div class="pic"><img src="<?= ASSETS ?>/img/team/team-2.jpg" class="img-fluid" alt=""></div>
                             <div class="member-info">
-                                <h4>Sarah Jhonson</h4>
-                                <span>Product Manager</span>
-                                <p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
+                                <h4>Emmanuel Asante Yeboah</h4>
+                                <span>Web Developer</span>
+                                <p>Web Developer, Database Administrator</p>
                                 <div class="social">
-                                    <a href=""><i class="bi bi-twitter-x"></i></a>
-                                    <a href=""><i class="bi bi-facebook"></i></a>
-                                    <a href=""><i class="bi bi-instagram"></i></a>
-                                    <a href=""> <i class="bi bi-linkedin"></i> </a>
+                                    <a href="#"><i class="bi bi-twitter-x"></i></a>
+                                    <a href="#"><i class="bi bi-facebook"></i></a>
+                                    <a href="#"><i class="bi bi-instagram"></i></a>
+                                    <a href="#"> <i class="bi bi-linkedin"></i> </a>
                                 </div>
                             </div>
                         </div>
@@ -357,7 +334,7 @@
                             <h3>Year Plan</h3>
                             <h4><sup>GHC </sup>58.50<span> / month</span></h4>
 
-                            <a href="#" class="buy-btn">Buy Now</a>
+                            <!-- <a href="#" class="buy-btn">Buy Now</a> -->
                         </div>
                     </div><!-- End Pricing Item -->
 
@@ -365,7 +342,7 @@
                         <div class="pricing-item featured">
                             <h3>2 Years Plan</h3>
                             <h4><sup>GHC </sup>50.00<span> / month</span></h4>
-                            <a href="#" class="buy-btn">Buy Now</a>
+                            <!-- <a href="#" class="buy-btn">Buy Now</a> -->
                         </div>
                     </div><!-- End Pricing Item -->
 
@@ -373,7 +350,7 @@
                         <div class="pricing-item">
                             <h3>3 years Plan</h3>
                             <h4><sup>GHC </sup>47.50<span> / month</span></h4>
-                            <a href="#" class="buy-btn">Buy Now</a>
+                            <!-- <a href="#" class="buy-btn">Buy Now</a> -->
                         </div>
                     </div><!-- End Pricing Item -->
 
@@ -404,7 +381,7 @@
                                 <i class="bi bi-geo-alt flex-shrink-0"></i>
                                 <div>
                                     <h3>Address</h3>
-                                    <p>Accra Newtown, Accra</p>
+                                    <p>Accra, Ghana</p>
                                 </div>
                             </div><!-- End Info Item -->
 
@@ -424,44 +401,66 @@
                                 </div>
                             </div><!-- End Info Item -->
 
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" style="border:0; width: 100%; height: 270px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe> -->
                         </div>
                     </div>
 
                     <div class="col-lg-7">
-                        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
-                            <div class="row gy-4">
+                        <div class="info-wrap">
+                            <form method="post" action="<?= HOME ?>/home/" class="" data-aos="fade-up">
+                                <div class="row gy-4">
 
-                                <div class="col-md-6">
-                                    <label for="name-field" class="pb-2">Your Name</label>
-                                    <input type="text" name="name" id="name-field" class="form-control" required="">
+                                    <div class="col-md-12">
+                                        <label for="name-field" class="pb-2">Your Name <code>*</code></label>
+                                        <input type="text" name="name" id="name-field" class="form-control" required="">
+                                        <?php if (isset($arr['name'])): ?>
+                                            <div class="error-message"><?= $arr['name'] ?></div>
+                                        <?php endif ?>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="email-field" class="pb-2">Your Phone <code>*</code></label>
+                                        <input type="text" class="form-control" name="phone" id="email-field" required="">
+                                        <?php if (isset($arr['phone'])): ?>
+                                            <div class="error-message"><?= $arr['phone'] ?></div>
+                                        <?php endif ?>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="email-field" class="pb-2">Your Email <code>*</code></label>
+                                        <input type="email" class="form-control" name="email" id="email-field" required="">
+                                        <?php if (isset($arr['email'])): ?>
+                                            <div class="error-message"><?= $arr['email'] ?></div>
+                                        <?php endif ?>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="subject-field" class="pb-2">Subject <code>* (Not More than 100 characters)</code></label>
+                                        <input type="text" class="form-control" name="subject" id="subject-field" required="">
+                                        <?php if (isset($arr['subject'])): ?>
+                                            <div class="error-message"><?= $arr['subject'] ?></div>
+                                        <?php endif ?>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="message-field" class="pb-2">Message <code>* (Not More than 500 characters)</code></label>
+                                        <textarea class="form-control" name="message" rows="5" id="message-field" required=""></textarea>
+                                        <?php if (isset($arr['message'])): ?>
+                                            <div class="error-message"><?= $arr['message'] ?></div>
+                                        <?php endif ?>
+                                    </div>
+
+                                    <div class="col-md-12 text-center">
+                                        <!-- <div class="loading">Loading</div>
+                                        <div class="error-message"></div>
+                                        <div class="sent-message">Your message has been sent. Thank you!</div> -->
+
+                                        <button class="btn btn-primary" type="submit">Send Message</button>
+                                    </div>
+
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="email-field" class="pb-2">Your Email</label>
-                                    <input type="email" class="form-control" name="email" id="email-field" required="">
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="subject-field" class="pb-2">Subject</label>
-                                    <input type="text" class="form-control" name="subject" id="subject-field" required="">
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="message-field" class="pb-2">Message</label>
-                                    <textarea class="form-control" name="message" rows="10" id="message-field" required=""></textarea>
-                                </div>
-
-                                <div class="col-md-12 text-center">
-                                    <div class="loading">Loading</div>
-                                    <div class="error-message"></div>
-                                    <div class="sent-message">Your message has been sent. Thank you!</div>
-
-                                    <button type="submit">Send Message</button>
-                                </div>
-
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div><!-- End Contact Form -->
 
                 </div>
@@ -474,6 +473,22 @@
 
     <footer id="footer" class="footer">
 
+        <script src="<?= ASSETS ?>/js/flush_arlert.js"></script>
+        <?php if (isset($_SESSION['messsage'])) : ?>
+            <script>
+                swal({
+                    title: "<?= $_SESSION['status_headen'] ?>",
+                    text: "<?= $_SESSION['messsage'] ?>",
+                    icon: "<?= $_SESSION['status_code'] ?>",
+                    button: "OK, THANKS!",
+                });
+                <?php
+                unset($_SESSION['messsage']);
+                unset($_SESSION['status_code']);
+                unset($_SESSION['status_headen']);
+                ?>
+            </script>
+        <?php endif; ?>
 
         <div class="container footer-top">
             <div class="row gy-4">
@@ -492,29 +507,27 @@
                 <div class="col-lg-2 col-md-3 footer-links">
                     <h4>Useful Links</h4>
                     <ul>
-                        <li><i class="bi bi-chevron-right"></i> <a href="https://ernestnketiaasubonteng.netlify.app/">Home</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="https://ernestnketiaasubonteng.netlify.app/portfolio">Portfolio</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="https://ernestnketiaasubonteng.netlify.app/services">Services</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a target="_blank" href="https://ernestnketiaasubonteng.netlify.app/">Home</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a target="_blank" href="https://ernestnketiaasubonteng.netlify.app/portfolio">Portfolio</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a target="_blank" href="https://ernestnketiaasubonteng.netlify.app/services">Services</a></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-2 col-md-3 footer-links">
                     <h4>Our Services</h4>
                     <ul>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-                        <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a target="_blank" href="https://ernestnketiaasubonteng.netlify.app/">Web Design</a></li>
+                        <li><i class="bi bi-chevron-right"></i> <a target="_blank" href="https://ernestnketiaasubonteng.netlify.app/portfolio">Product Management</a></li>
                     </ul>
                 </div>
 
                 <div class="col-lg-4 col-md-12">
                     <h4>Follow Us</h4>
                     <div class="social-links d-flex">
-                        <a href="https://x.com/Anektech"><i class="bi bi-twitter-x"></i></a>
-                        <a href="https://www.facebook.com/share/1BUnxPwyWy/"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.instagram.com/kingdestiny108?igsh=M3Y5NHpoOGVhZzFk"><i class="bi bi-instagram"></i></a>
-                        <a href="https://www.linkedin.com/in/ernest-nketia-asubonteng-55819620a"><i class="bi bi-linkedin"></i></a>
+                        <a target="_blank" href="https://x.com/Anektech"><i class="bi bi-twitter-x"></i></a>
+                        <a target="_blank" href="https://www.facebook.com/share/1BUnxPwyWy/"><i class="bi bi-facebook"></i></a>
+                        <a target="_blank" href="https://www.instagram.com/kingdestiny108?igsh=M3Y5NHpoOGVhZzFk"><i class="bi bi-instagram"></i></a>
+                        <a target="_blank" href="https://www.linkedin.com/in/ernest-nketia-asubonteng-55819620a"><i class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
 
@@ -524,7 +537,7 @@
         <div class="container copyright text-center mt-4">
             <p>© <span>Copyright</span> <strong class="px-1 sitename">ANEK TECH</strong> <span>All Rights Reserved</span></p>
             <div class="credits">
-                Designed by <a href="https://ernestnketiaasubonteng.netlify.app/">ANEK TECH</a>
+                Designed by <a target="_blank" href="https://ernestnketiaasubonteng.netlify.app/">ANEK TECH</a>
             </div>
         </div>
 

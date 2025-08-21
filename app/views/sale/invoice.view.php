@@ -25,7 +25,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Forms</a>
+                                <a href="<?= HOME ?>/sales/invoices">Invoices</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
@@ -63,6 +63,7 @@
                                                     <th>Unit Price</th>
                                                     <th>Total</th>
                                                     <th>Sold Date</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -74,17 +75,28 @@
                                                             <td>GHC <?= esc($prod->price) ?></td>
                                                             <td>GHC <?= esc(number_format($prod->price * $prod->quantity, 2)) ?></td>
                                                             <td><?= esc($prod->datesold) ?></td>
+                                                            <td>
+                                                                <div class="form-button-action">
+                                                                    <a href="<?= HOME ?>/sales/returnSale/<?= esc($prod->id) ?>"
+                                                                        type="button"
+                                                                        data-bs-toggle="tooltip"
+                                                                        title="Edit Task"
+                                                                        class="btn btn-link btn-primary btn-lg">
+                                                                        <i class="fa fa-undo"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 <?php else: ?>
                                                     <tr>
-                                                        <td colspan="5">No Data Found!</td>
+                                                        <td colspan="6">No Data Found!</td>
                                                     </tr>
                                                 <?php endif; ?>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td colspan="5">
+                                                    <td colspan="6">
                                                         <hr>
                                                     </td>
                                                 </tr>

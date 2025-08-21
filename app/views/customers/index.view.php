@@ -116,7 +116,7 @@
                                                             <td><?= esc($cust->custname) ?></td>
                                                             <td><?= esc($cust->custlocation) ?></td>
                                                             <td><?= esc($cust->custphone) ?></td>
-                                                            <td><?= esc($cust->status == 0 ? 'Active' : 'In-Active') ?></td>
+                                                            <td><?= get_status(esc($cust->status)) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
                                                                     <?php if (Auth::access('Super Admin')): ?>

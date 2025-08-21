@@ -29,28 +29,6 @@
         <div class="container-fluid">
 
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
-                <li
-                    class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
-                    <a
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        href="<?= ASSETS ?>/#"
-                        role="button"
-                        aria-expanded="false"
-                        aria-haspopup="true">
-                        <i class="fa fa-search"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-search animated fadeIn">
-                        <form class="navbar-left navbar-form nav-search">
-                            <div class="input-group">
-                                <input
-                                    type="text"
-                                    placeholder="Search ..."
-                                    class="form-control" />
-                            </div>
-                        </form>
-                    </ul>
-                </li>
 
 
                 <li class="nav-item topbar-icon dropdown hidden-caret">
@@ -135,8 +113,15 @@
                         href="<?= ASSETS ?>/#"
                         aria-expanded="false">
                         <div class="avatar-sm">
+                            <?php
+                            $image = ASSETS . "/images/male_user.png";
+
+                            if (Auth::getImage()) {
+                                $image = ROOT . "/" . Auth::getImage();
+                            }
+                            ?>
                             <img
-                                src="<?= ASSETS ?>/img/profile.jpg"
+                                src="<?= $image ?>"
                                 alt="..."
                                 class="avatar-img rounded-circle" />
                         </div>
@@ -150,8 +135,15 @@
                             <li>
                                 <div class="user-box">
                                     <div class="avatar-lg">
+                                        <?php
+                                        $image = ASSETS . "/images/male_user.png";
+
+                                        if (Auth::getImage()) {
+                                            $image = ROOT . "/" . Auth::getImage();
+                                        }
+                                        ?>
                                         <img
-                                            src="<?= ASSETS ?>/img/profile.jpg"
+                                            src="<?= $image ?>"
                                             alt="image profile"
                                             class="avatar-img rounded" />
                                     </div>
@@ -163,7 +155,7 @@
                             </li>
                             <li>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="<?= HOME ?>/profile">Account Setting</a>
+                                <a class="dropdown-item" href="<?= HOME ?>/users/profile">Account Setting</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<?= HOME ?>/logout">Logout</a>
                             </li>

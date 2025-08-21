@@ -457,6 +457,11 @@ class Sales extends Controller
             return $this->redirect('login');
         }
 
+        // Setting pagination
+        $limit = 15;
+        $pager = new Pager($limit);
+        $offset = $pager->offset;
+
         $sales = new Sale();
         $data = array();
         $arr = array();
@@ -464,16 +469,50 @@ class Sales extends Controller
         if (isset($_GET['startdate'])) {
             $arr['shopid'] = Auth::getShop()->shopid;
             $arr['startdate'] = $_GET['startdate'];
-            $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid AND s.datesold =:startdate GROUP BY s.productid, s.price, p.pro_name;", $arr);
+            $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid AND s.datesold =:startdate GROUP BY s.productid, s.price, p.pro_name LIMIT {$limit} OFFSET {$offset};", $arr);
         }
 
         if (isset($_GET['startdate']) && isset($_GET['enddate'])) {
             $arr['enddate'] = $_GET['enddate'];
-            $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid AND s.datesold BETWEEN :startdate AND :enddate GROUP BY s.productid, s.price, p.pro_name;", $arr);
+            $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid AND s.datesold BETWEEN :startdate AND :enddate GROUP BY s.productid, s.price, p.pro_name LIMIT {$limit} OFFSET {$offset};", $arr);
         } else {
-            $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid GROUP BY s.productid, s.price, p.pro_name;", [
+            $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid GROUP BY s.productid, s.price, p.pro_name LIMIT {$limit} OFFSET {$offset};", [
                 'shopid' => Auth::getShop()->shopid,
             ]);
+        }
+
+        if (isset($_POST['export'])) {
+            if (isset($_GET['startdate'])) {
+                $arr['shopid'] = Auth::getShop()->shopid;
+                $arr['startdate'] = $_GET['startdate'];
+                $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid AND s.datesold =:startdate GROUP BY s.productid, s.price, p.pro_name;", $arr);
+            }
+
+            if (isset($_GET['startdate']) && isset($_GET['enddate'])) {
+                $arr['enddate'] = $_GET['enddate'];
+                $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid AND s.datesold BETWEEN :startdate AND :enddate GROUP BY s.productid, s.price, p.pro_name;", $arr);
+            } else {
+                $data = $sales->where_query("SELECT p.pro_name AS product_name, SUM(s.quantity) AS total_prod_quantity, s.price AS prod_unit_price, SUM(s.quantity * s.price) AS total_prod_amount FROM sales s JOIN products p ON s.productid = p.productid WHERE s.shopid =:shopid GROUP BY s.productid, s.price, p.pro_name;", [
+                    'shopid' => Auth::getShop()->shopid,
+                ]);
+            }
+
+            $filename = "Purchases_" . date('Y-m-d') . ".csv";
+            header("Content-Type: application/vnd.ms-excel");
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            $output = fopen('php://output', 'w');
+            fputcsv($output, ['Product Name', 'Total Quantity', 'Unit Price', 'Total Amount']);
+            foreach ($data as $row) {
+                fputcsv($output, [
+                    $row->product_name,
+                    $row->total_prod_quantity,
+                    $row->prod_unit_price,
+                    $row->total_prod_amount
+                ]);
+            }
+            fclose($output);
+            exit;
         }
 
         $crumbs[] = ['Dashboard', 'dashboard'];
@@ -485,6 +524,7 @@ class Sales extends Controller
         $this->view('sale/purchases', [
             'rows' => $data,
             'crumbs' => $crumbs,
+            'pager' => $pager,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
             'link' => $link
@@ -524,6 +564,89 @@ class Sales extends Controller
         $hiddenSearch  = '';
         $this->view('sale/profit', [
             'rows' => $data,
+            'crumbs' => $crumbs,
+            'hiddenSearch' => $hiddenSearch,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
+
+    function returns($id)
+    {
+        if (!Auth::logged_in()) {
+            return $this->redirect('login');
+        }
+
+        $sales = new Sale();
+        $data = array();
+
+        $data = $sales->where_query("SELECT * FROM `sales` WHERE `shopid`=:shopid AND `ordernumber` =:ordernumber", [
+            'shopid' => Auth::getShop()->shopid,
+            'ordernumber' => $id,
+        ]);
+
+        $crumbs[] = ['Dashboard', 'dashboard'];
+        $crumbs[] = ['Products', 'products'];
+        $crumbs[] = ['Products', ''];
+        $actives = 'salesreport';
+        $link = 'saleslist';
+        $hiddenSearch  = '';
+        $this->view('sale/returns', [
+            'salesdata' => $data,
+            'id' => $id,
+            'crumbs' => $crumbs,
+            'hiddenSearch' => $hiddenSearch,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
+
+    function returnSale($saleid)
+    {
+        if (!Auth::logged_in()) {
+            return $this->redirect('login');
+        }
+
+        $sales = new Sale();
+        $products = new Product();
+
+        $data = $sales->where_query("SELECT * FROM `sales` WHERE `shopid`=:shopid AND `id` =:saleid", [
+            'shopid' => Auth::getShop()->shopid,
+            'saleid' => $saleid,
+        ]);
+
+        if (isset($_POST['ordernumber'])) {
+            $ordernumber = $_POST['ordernumber'];
+            $quantity = $_POST['quantity'];
+            $productid = $_POST['productid'];
+
+            // Update the product quantity
+            $products->query("UPDATE `products` SET `quantity` = `quantity` + :quantity WHERE `productid` = :productid AND `shopid` = :shopid", [
+                'quantity' => $quantity,
+                'productid' => $productid,
+                'shopid' => Auth::getShop()->shopid,
+            ]);
+
+            // Delete the sale record
+            $sales->query("DELETE FROM `sales` WHERE `ordernumber` = :ordernumber AND `shopid` = :shopid", [
+                'ordernumber' => $ordernumber,
+                'shopid' => Auth::getShop()->shopid,
+            ]);
+
+            $_SESSION['messsage'] = "Sale returned successfully";
+            $_SESSION['status_code'] = "success";
+            $_SESSION['status_headen'] = "Good job!";
+            // return $this->redirect('sales/list');
+        }
+
+        $crumbs[] = ['Dashboard', 'dashboard'];
+        $crumbs[] = ['Sales', 'sales'];
+        $crumbs[] = ['Returns', ''];
+        $actives = 'salesreport';
+        $link = 'saleslist';
+        $hiddenSearch  = '';
+        $this->view('sale/returnSale', [
+            'salesdata' => $data,
             'crumbs' => $crumbs,
             'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
