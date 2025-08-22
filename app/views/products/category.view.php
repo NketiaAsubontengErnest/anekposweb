@@ -107,6 +107,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <?php $pager->display($rows ? count($rows) : 0); ?>
                                 </div>
                             </div>
                         </div>

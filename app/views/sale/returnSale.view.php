@@ -24,169 +24,112 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="<?= HOME ?>/products">Products</a>
+                                <a href="<?= HOME ?>/sales/invoice/<?= $salesdata->ordernumber ?>"><?= $salesdata->ordernumber ?></a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Add Prodcut</a>
+                                <a href="#">Return Prodcut</a>
                             </li>
                         </ul>
                     </div>
                     <div class="row">
-                        <?= show($salesdata) ?>
-                        <div class="col-md-12">
-                            <form method="post">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Add Prodcut</div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-6 col-lg-4">
-                                                <div class="form-group">
-                                                    <label for="successInput">Barcode</label>
-                                                    <input
-                                                        type="text"
-                                                        id="successInput"
-                                                        name="barcode"
-                                                        class="form-control" />
-                                                    <?php if (isset($errors['barcode'])) : ?>
-                                                        <code><?= $errors['barcode'] ?></code>
-                                                    <?php endif; ?>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="quantity">Quantity</label>
-                                                    <input name="quantity"
-                                                        type="number"
-                                                        class="form-control"
-                                                        id="quantity"
-                                                        placeholder="20" />
-                                                    <?php if (isset($errors['quantity'])) : ?>
-                                                        <code><?= $errors['quantity'] ?></code>
-                                                    <?php endif; ?>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-lg-6">
-                                                        <div class="form-group">
-                                                            <label for="quantity">Expire Date</label>
-                                                            <input name="expiredate"
-                                                                type="date"
-                                                                class="form-control"
-                                                                id="expiredate"
-                                                                placeholder="20" />
-                                                            <?php if (isset($errors['expiredate'])) : ?>
-                                                                <code><?= $errors['expiredate'] ?></code>
-                                                            <?php endif; ?>
-                                                        </div>
+                        <?php if ($salesdata): ?>
+                            <div class="col-md-12">
+                                <form method="post">
+                                    <input type="hidden" name="productid" value="<?= $salesdata->productid ?>">
+                                    <input type="hidden" name="ordernumber" value="<?= $salesdata->ordernumber ?>">
+                                    <input type="hidden" name="oldquant" value="<?= $salesdata->quantity ?>">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Return Prodcut</div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6 col-lg-4">
+                                                    <div class="form-group">
+                                                        <label for="successInput">Barcode</label>
+                                                        <input
+                                                            type="text"
+                                                            id="successInput"
+                                                            disabled
+                                                            value="<?= $salesdata->product->barcode ?>"
+                                                            class="form-control" />
                                                     </div>
-                                                    <div class="col-md-6 col-lg-6">
 
-                                                        <div class="form-group">
-                                                            <label for="batchcode">Batch Code</label>
-                                                            <input
-                                                                value="<?= get_var('batchcode') ?>"
-                                                                type="text"
-                                                                class="form-control"
-                                                                id="batchcode"
-                                                                name="batchcode"
-                                                                placeholder="X X X X X X X X" required />
-                                                        </div>
+                                                    <div class="form-group">
+                                                        <label for="quantity">Quantity</label>
+                                                        <input disabled
+                                                            value="<?= $salesdata->quantity ?>"
+                                                            type="number"
+                                                            class="form-control"
+                                                            id="quantity"
+                                                            placeholder="20" />
                                                     </div>
-                                                </div>
-                                            </div>
 
-                                            <div class="col-md-6 col-lg-4">
-                                                <div class="form-group">
-                                                    <label for="successInput">Product Name</label>
-                                                    <input
-                                                        type="text"
-                                                        id="successInput"
-                                                        name="pro_name"
-                                                        class="form-control" />
-                                                    <?php if (isset($errors['pro_name'])) : ?>
-                                                        <code><?= $errors['pro_name'] ?></code>
-                                                    <?php endif; ?>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label for="threshold">Threshold Quantity</label>
-                                                    <input name="threshold"
-                                                        type="number"
-                                                        class="form-control"
-                                                        id="threshold"
-                                                        placeholder="20" />
-                                                    <?php if (isset($errors['threshold'])) : ?>
-                                                        <code><?= $errors['threshold'] ?></code>
-                                                    <?php endif; ?>
+                                                <div class="col-md-6 col-lg-4">
+                                                    <div class="form-group">
+                                                        <label for="successInput">Product Name</label>
+                                                        <input
+                                                            disabled
+                                                            value="<?= $salesdata->product->pro_name ?>"
+                                                            type="text"
+                                                            id="successInput"
+                                                            class="form-control" />
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="threshold">Retuning Quantity</label>
+                                                        <input
+                                                            name="returningQty"
+                                                            type="number"
+                                                            min="1"
+                                                            max="<?= $salesdata->quantity ?>"
+                                                            required
+                                                            class="form-control"
+                                                            id="threshold"
+                                                            placeholder="<?= $salesdata->quantity ?>" />
+                                                    </div>
+
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <label for="largeSelect">Hidden</label>
-                                                    <select name="hide"
-                                                        class="form-select form-control-lg" id="largeSelect">
-                                                        <option value="NO">NO</option>
-                                                        <option value="YES">YES</option>
-                                                    </select>
-                                                    <?php if (isset($errors['hide'])) : ?>
-                                                        <code><?= $errors['hide'] ?></code>
-                                                    <?php endif; ?>
-                                                </div>
+                                                <div class="col-md-6 col-lg-4">
 
-                                            </div>
+                                                    <div class="form-group">
+                                                        <label for="cost_price">Sold by:</label>
+                                                        <input
+                                                            disabled
+                                                            value="<?= $salesdata->seller->firstname . " " . $salesdata->seller->lastname ?>"
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="cost_price"
+                                                            placeholder="20.00" />
+                                                    </div>
 
-                                            <div class="col-md-6 col-lg-4">
-                                                <div class="form-group">
-                                                    <label for="largeSelect">Category</label>
-                                                    <select name="catid"
-                                                        class="form-select form-control-lg" id="largeSelect">
-                                                        <option>--Select Category --</option>
-                                                        <?php if ($catrows): ?>
-                                                            <?php foreach ($catrows as $cat): ?>
-                                                                <option value="<?= esc($cat->id) ?>"><?= esc($cat->category) ?></option>
-                                                            <?php endforeach; ?>
-                                                        <?php endif; ?>
-                                                        <?php if (isset($errors['catid'])) : ?>
-                                                            <code><?= $errors['catid'] ?></code>
-                                                        <?php endif; ?>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="cost_price">Cost Price</label>
-                                                    <input name="cost_price"
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="cost_price"
-                                                        placeholder="20.00" />
-                                                    <?php if (isset($errors['cost_price'])) : ?>
-                                                        <code><?= $errors['cost_price'] ?></code>
-                                                    <?php endif; ?>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="selling_price">Selling Price</label>
-                                                    <input name="selling_price"
-                                                        type="text"
-                                                        class="form-control"
-                                                        id="selling_price"
-                                                        placeholder="20.00" />
-                                                    <?php if (isset($errors['selling_price'])) : ?>
-                                                        <code><?= $errors['selling_price'] ?></code>
-                                                    <?php endif; ?>
+                                                    <div class="form-group">
+                                                        <label for="selling_price">Seller Phone</label>
+                                                        <input
+                                                            disabled
+                                                            value="<?= $salesdata->seller->phone ?>"
+                                                            type="text"
+                                                            class="form-control"
+                                                            id="selling_price"
+                                                            placeholder="20.00" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="card-action">
+                                            <button class="btn btn-primary">Return</button>
+                                            <a href="<?= HOME ?>/sales/invoice/<?= $salesdata->ordernumber ?>" class="btn btn-danger">Cancel</a>
+                                        </div>
                                     </div>
-                                    <div class="card-action">
-                                        <button class="btn btn-primary">Add Product</button>
-                                        <a href="<?= HOME ?>/products" class="btn btn-danger">Cancel</a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                                </form>
+                            </div>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>

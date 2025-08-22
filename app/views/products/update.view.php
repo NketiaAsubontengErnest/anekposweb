@@ -128,7 +128,7 @@
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""
-                                                                        class="btn btn-link btn-primary btn-lg"
+                                                                        class="btn btn-link btn-success btn-lg"
                                                                         data-original-title="Edit Task">
                                                                         <i class="fa fa-plus"></i>
                                                                     </a>

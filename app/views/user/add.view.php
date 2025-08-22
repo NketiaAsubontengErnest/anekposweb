@@ -24,7 +24,7 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Forms</a>
+                                <a href="<?= HOME ?>/users">Users</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>

@@ -24,10 +24,15 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Customers</a>
+                                <a href="<?= HOME ?>/customers">Customers</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <?php if ($row): ?>
+                                    <a href="#">Debts for <?= esc($row->custname . ', ' .  $row->custlocation) ?></a>
+                                <?php endif; ?>
                             </li>
                         </ul>
                     </div>
@@ -35,7 +40,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="card-title">Pay Debt for <?=esc($row->custname .', '.$row->custlocation .' - '.$row->custphone)?></div>
+                                    <div class="card-title">Pay Debt for <?= esc($row->custname . ', ' . $row->custlocation . ' - ' . $row->custphone) ?></div>
                                 </div>
                                 <form action="" method="post">
                                     <div class="card-body">
@@ -43,7 +48,7 @@
                                             <div class="col-md-6 col-lg-4">
                                                 <div class="form-group">
                                                     <label for="successInput">Total Debt</label>
-                                                    <h2>GHC <?=esc($row->customer_total_debt->total_debt - $row->customer_total_pay->total_pay)?></h2>
+                                                    <h2>GHC <?= esc($row->customer_total_debt->total_debt - $row->customer_total_pay->total_pay) ?></h2>
                                                 </div>
                                             </div>
 
@@ -96,7 +101,7 @@
                                                             <td><?= esc($pay->amount) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/customers/payedit/<?= esc($pay->id) ?>?invoice=<?=esc($_GET['invoice'])?>&custid=<?=esc($pay->custid)?>"
+                                                                    <a href="<?= HOME ?>/customers/payedit/<?= esc($pay->id) ?>?invoice=<?= esc($_GET['invoice']) ?>&custid=<?= esc($pay->custid) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title=""

@@ -143,11 +143,6 @@ class Products extends Controller
         if (!Auth::logged_in()) {
             return $this->redirect('login');
         }
-        // Setting pagination
-
-        $limit = 15;
-        $pager = new Pager($limit);
-        $offset = $pager->offset;
 
         $errors = [];
 
@@ -156,13 +151,12 @@ class Products extends Controller
 
         if (count($_POST) > 0) {
             if ($products->validate($_POST)) {
-                $_POST['productid'] = generateRandomCode(55);
-                $products->insert($_POST);
-                $_SESSION['messsage'] = "Product Added Successfully";
+                $products->update($id, $_POST, 'productid');
+                $_SESSION['messsage'] = "Product Updated Successfully";
                 $_SESSION['status_code'] = "success";
                 $_SESSION['status_headen'] = "Good job!";
 
-                return $this->redirect("products/add");
+                return $this->redirect("products");
             } else {
                 $errors = $products->errors;
             }
@@ -181,7 +175,6 @@ class Products extends Controller
             'row' => $data,
             'catrows' => $catdata,
             'hiddenSearch' => $hiddenSearch,
-            'pager' => $pager,
             'crumbs' => $crumbs,
             'errors' => $errors,
             'actives' => $actives
@@ -258,7 +251,7 @@ class Products extends Controller
         if (count($_POST) > 0) {
             $_POST['category'] = strtoupper($_POST['category']);
 
-            $categorys->update($id, $_POST,);
+            $categorys->update($id, $_POST);
 
             $_SESSION['messsage'] = "Category Update Successfully";
             $_SESSION['status_code'] = "success";
@@ -338,10 +331,6 @@ class Products extends Controller
         if (!Auth::logged_in()) {
             return $this->redirect('login');
         }
-        // Setting pagination
-        $limit = 15;
-        $pager = new Pager($limit);
-        $offset = $pager->offset;
 
         $products = new Product();
         $batchs = new Batch();
@@ -357,9 +346,9 @@ class Products extends Controller
             unset($_POST['expiredate']);
 
             $batchs->insert($arrs);
-
+            $_POST['shopid'] = $arrs['shopid'];
             $_POST['productid'] = $id;
-            $query = "UPDATE `products` SET `quantity`=`quantity` + :quantity,`threshold`=:threshold WHERE `productid` =:productid";
+            $query = "UPDATE `products` SET `quantity`=`quantity` + :quantity,`threshold`=:threshold WHERE `productid` =:productid AND shopid =:shopid";
             $products->query($query, $_POST);
             $_SESSION['messsage'] = "Quantity Added Successfully";
             $_SESSION['status_code'] = "success";
@@ -379,7 +368,6 @@ class Products extends Controller
         return $this->view('products/quantupdate', [
             'row' => $data,
             'hiddenSearch' => $hiddenSearch,
-            'pager' => $pager,
             'crumbs' => $crumbs,
             'actives' => $actives,
             'link' => $link

@@ -97,17 +97,17 @@
                                             </thead>
                                             <tbody>
                                                 <?php if ($salesdata): ?>
-                                                    <?php foreach ($salesdata as $prod): ?>
+                                                    <?php foreach ($salesdata as $sale): ?>
                                                         <tr>
-                                                            <td><?= esc($prod->ordernumber) ?></td>
-                                                            <td><?= esc($prod->product->pro_name) ?></td>
-                                                            <td><?= esc($prod->quantity) ?></td>
-                                                            <td>GHC <?= esc($prod->price) ?></td>
-                                                            <td>GHC <?= esc(number_format($prod->price * $prod->quantity, 2)) ?></td>
-                                                            <td><?= esc($prod->datesold) ?></td>
+                                                            <td><?= esc($sale->ordernumber) ?></td>
+                                                            <td><?= esc($sale->product->pro_name) ?></td>
+                                                            <td><?= esc($sale->quantity) ?></td>
+                                                            <td>GHC <?= esc($sale->price) ?></td>
+                                                            <td>GHC <?= esc(number_format($sale->price * $sale->quantity, 2)) ?></td>
+                                                            <td><?= esc($sale->datesold) ?></td>
                                                             <td>
                                                                 <div class="form-button-action">
-                                                                    <a href="<?= HOME ?>/sales/returnSale/<?= esc($prod->id) ?>"
+                                                                    <a href="<?= HOME ?>/sales/returnSale/<?= esc($sale->id) ?>"
                                                                         type="button"
                                                                         data-bs-toggle="tooltip"
                                                                         title="Edit Task"

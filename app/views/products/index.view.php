@@ -16,7 +16,7 @@
                         <h3 class="fw-bold">Product</h3>
                         <ul class="breadcrumbs">
                             <li class="nav-home">
-                                <a href="#">
+                                <a href="<?= HOME ?>/dashboard">
                                     <i class="icon-home"></i>
                                 </a>
                             </li>
@@ -137,25 +137,12 @@
                                                                             type="button"
                                                                             data-bs-toggle="tooltip"
                                                                             title=""
-                                                                            class="btn btn-link btn-primary btn-lg"
+                                                                            class="btn btn-link btn-success btn-lg"
                                                                             data-original-title="Edit Task">
                                                                             <i class="fa fa-plus"></i>
                                                                         </a>
                                                                     <?php endif ?>
-                                                                    <?php if (Auth::access('Super Admin')): ?>
-                                                                        <form action="" method="post">
-                                                                            <button
-                                                                                name="del"
-                                                                                value="<?= esc($prod->productid) ?>"
-                                                                                type="button"
-                                                                                data-bs-toggle="tooltip"
-                                                                                title=""
-                                                                                class="btn btn-link btn-danger"
-                                                                                data-original-title="Remove">
-                                                                                <i class="fa fa-times"></i>
-                                                                            </button>
-                                                                        </form>
-                                                                    <?php endif ?>
+
                                                                 </div>
                                                             </td>
                                                         </tr>

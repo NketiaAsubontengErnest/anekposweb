@@ -24,10 +24,13 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Customers</a>
+                                <a href="<?= HOME ?>/customers">Customers</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#">Debts</a>
                             </li>
                         </ul>
                     </div>

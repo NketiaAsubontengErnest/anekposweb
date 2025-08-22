@@ -285,4 +285,96 @@ class Customers extends Controller
             'link' => $link
         ]);
     }
+
+    function payedit($id)
+    {
+        if (!Auth::logged_in()) {
+            $this->redirect('login');
+        }
+        $data = array();
+        $customers = new Customer();
+        $custpay = new Custpaydebt();
+
+        $data = $customers->where_query('SELECT * FROM `customers` WHERE `custid` =:custid AND `shopid` =:shopid', [
+            'custid' => $_GET['custid'],
+            'shopid' => Auth::getShop()->shopid,
+        ])[0];
+
+        $datapay = $custpay->where_query('SELECT * FROM `custpaydebts` WHERE `shopid` =:shopid AND `custid` =:custid AND id =:payid', [
+            'payid' => $id,
+            'custid' => $_GET['custid'],
+            'shopid' => Auth::getShop()->shopid,
+        ])[0];
+
+        if (count($_POST) > 0) {
+
+            $custpay->update($id, $_POST);
+
+            $_SESSION['messsage'] = "Payment Updated Successfully";
+            $_SESSION['status_code'] = "success";
+            $_SESSION['status_headen'] = "Good job!";
+
+            return $this->redirect("customers/paydebt/$id?invoice=" . $_GET['invoice'] . "&custid=" . $_GET['custid']);
+        }
+
+        $actives = 'customers';
+        $link = 'customersdebts';
+        $hiddenSearch  = '';
+        $crumbs  = array();
+
+        $this->view('customers/payedit', [
+            'row' => $data,
+            'rows' => $datapay,
+            'crumbs' => $crumbs,
+            'hiddenSearch' => $hiddenSearch,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
+
+    function debtsedit($id)
+    {
+        if (!Auth::logged_in()) {
+            $this->redirect('login');
+        }
+        $data = array();
+        $customers = new Customer();
+        $custdebt = new Customerdebt();
+
+        $data = $customers->where_query('SELECT * FROM `customers` WHERE `custid` =:custid AND `shopid` =:shopid', [
+            'custid' => $_GET['custid'],
+            'shopid' => Auth::getShop()->shopid,
+        ])[0];
+
+        $datapay = $custdebt->where_query('SELECT * FROM `customerdebts` WHERE `shopid` =:shopid AND `custid` =:custid AND id =:debtid', [
+            'debtid' => $id,
+            'custid' => $_GET['custid'],
+            'shopid' => Auth::getShop()->shopid,
+        ])[0];
+
+        if (count($_POST) > 0) {
+
+            $custdebt->update($id, $_POST);
+
+            $_SESSION['messsage'] = "Debt Updated Successfully";
+            $_SESSION['status_code'] = "success";
+            $_SESSION['status_headen'] = "Good job!";
+
+            return $this->redirect("customers/alldebts/" . $_GET['custid']);
+        }
+
+        $actives = 'customers';
+        $link = 'customersdebts';
+        $hiddenSearch  = '';
+        $crumbs  = array();
+
+        $this->view('customers/debtsedit', [
+            'row' => $data,
+            'rows' => $datapay,
+            'crumbs' => $crumbs,
+            'hiddenSearch' => $hiddenSearch,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
 }

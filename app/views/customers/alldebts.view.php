@@ -24,10 +24,15 @@
                                 <i class="icon-arrow-right"></i>
                             </li>
                             <li class="nav-item">
-                                <a href="#">Customers</a>
+                                <a href="<?= HOME ?>/customers">Customers</a>
                             </li>
                             <li class="separator">
                                 <i class="icon-arrow-right"></i>
+                            </li>
+                            <li class="nav-item">
+                                <?php if ($row): ?>
+                                    <a href="#">Debts for <?= esc($row->custname . ', ' .  $row->custlocation) ?></a>
+                                <?php endif; ?>
                             </li>
                         </ul>
                     </div>
@@ -66,6 +71,7 @@
                                                     <th>Invoice</th>
                                                     <th>Amount</th>
                                                     <th>Date</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -75,6 +81,17 @@
                                                             <td><a href="<?= HOME ?>/sales/invoice/<?= $debt->invoicenum ?>"><?= esc($debt->invoicenum) ?></a></td>
                                                             <td><?= esc($debt->amount) ?></td>
                                                             <td><?= esc($debt->date) ?></td>
+                                                            <td>
+                                                                <div class="form-button-action">
+                                                                    <a href="<?= HOME ?>/customers/debtsedit/<?= esc($debt->id) ?>?invoice=<?= esc($debt->invoicenum) ?>&custid=<?= esc($debt->custid) ?>"
+                                                                        type="button"
+                                                                        data-bs-toggle="tooltip"
+                                                                        title=""
+                                                                        class="btn btn-link btn-primary btn-lg"
+                                                                        data-original-title="Pay Debt">
+                                                                        <i class="fa fa-edit"></i>
+                                                                    </a>
+                                                                </div>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 <?php else: ?>

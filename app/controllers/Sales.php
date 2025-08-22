@@ -613,12 +613,23 @@ class Sales extends Controller
         $data = $sales->where_query("SELECT * FROM `sales` WHERE `shopid`=:shopid AND `id` =:saleid", [
             'shopid' => Auth::getShop()->shopid,
             'saleid' => $saleid,
-        ]);
+        ])[0];
 
-        if (isset($_POST['ordernumber'])) {
+        if (count($_POST) > 0) {
             $ordernumber = $_POST['ordernumber'];
-            $quantity = $_POST['quantity'];
+            $quantity = $_POST['returningQty'];
             $productid = $_POST['productid'];
+            $oldqty = $_POST['oldquant'];
+
+            // Validate the quantity to return
+            if ($quantity <= 0 || $quantity > $oldqty) {
+                $_SESSION['messsage'] = "Invalid quantity to return";
+                $_SESSION['status_code'] = "error";
+                $_SESSION['status_headen'] = "Error!";
+                return $this->redirect('sales/returnSale/' . $saleid);
+            }
+
+            $remainingQty = $oldqty - $quantity;
 
             // Update the product quantity
             $products->query("UPDATE `products` SET `quantity` = `quantity` + :quantity WHERE `productid` = :productid AND `shopid` = :shopid", [
@@ -628,15 +639,27 @@ class Sales extends Controller
             ]);
 
             // Delete the sale record
-            $sales->query("DELETE FROM `sales` WHERE `ordernumber` = :ordernumber AND `shopid` = :shopid", [
-                'ordernumber' => $ordernumber,
-                'shopid' => Auth::getShop()->shopid,
-            ]);
+            if ($remainingQty > 0) {
+                // If there are remaining items, update the sale record with the new quantity
+                $sales->query("UPDATE `sales` SET `quantity` = :quantity WHERE `ordernumber` = :ordernumber AND `shopid` = :shopid AND id =:salesid", [
+                    'salesid' => $saleid,
+                    'quantity' => $remainingQty,
+                    'ordernumber' => $ordernumber,
+                    'shopid' => Auth::getShop()->shopid,
+                ]);
+            } else {
+                // If no remaining items, delete the sale record
+                $sales->query("DELETE FROM `sales` WHERE `ordernumber` = :ordernumber AND `shopid` = :shopid AND id =:salesid", [
+                    'salesid' => $saleid,
+                    'ordernumber' => $ordernumber,
+                    'shopid' => Auth::getShop()->shopid,
+                ]);
+            }
 
             $_SESSION['messsage'] = "Sale returned successfully";
             $_SESSION['status_code'] = "success";
             $_SESSION['status_headen'] = "Good job!";
-            // return $this->redirect('sales/list');
+            return $this->redirect('sales/invoice/' . $ordernumber);
         }
 
         $crumbs[] = ['Dashboard', 'dashboard'];
