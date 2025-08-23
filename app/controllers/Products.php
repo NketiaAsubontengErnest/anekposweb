@@ -120,7 +120,7 @@ class Products extends Controller
             $data = $products->findAll($limit, $offset, 'DESC');
         }
 
-        $catdata = $category->findAll();
+        $catdata = $category->where('shopid', Auth::getShop()->shopid);
 
         //this are for breadcrumb
         $crumbs[] = ['Dashboard', 'dashboard'];
@@ -214,8 +214,8 @@ class Products extends Controller
 
         if (isset($_GET['search_box'])) {
             $arr['searchuse'] = '%' . $_GET['search_box'] . '%';
-            $query = "SELECT * FROM `categorys` WHERE `category` LIKE :searchuse LIMIT $limit OFFSET $offset";
-
+            $query = "SELECT * FROM `categorys` WHERE (`category` LIKE :searchuse) AND shopid =:shopid LIMIT $limit OFFSET $offset";
+            $arr['shopid'] = Auth::getShop()->shopid;
             $data = $category->findSearch($query, $arr);
         } else {
             $data = $category->findAll($limit, $offset, 'DESC');
@@ -400,7 +400,7 @@ class Products extends Controller
 
         $crumbs[] = ['Dashboard', 'dashboard'];
         $crumbs[] = ['Products', 'products'];
-        $crumbs[] = ['Category', ''];
+        $crumbs[] = ['Expire', ''];
         $actives = 'products';
         $link = 'updates';
         $hiddenSearch = "";
@@ -409,6 +409,37 @@ class Products extends Controller
             'hiddenSearch' => $hiddenSearch,
             'pager' => $pager,
             'crumbs' => $crumbs,
+            'actives' => $actives,
+            'link' => $link
+        ]);
+    }
+
+    function print()
+    {
+        if (!Auth::logged_in()) {
+            return $this->redirect('login');
+        }
+
+        $products = new Product();
+
+        $shop = Auth::getShop();
+
+        $data = array();
+        $data = $products->where_query("SELECT * FROM `products` WHERE `shopid`=:shopid", [
+            'shopid' => Auth::getShop()->shopid
+        ]);
+
+        $crumbs[] = ['Dashboard', 'dashboard'];
+        $crumbs[] = ['Products', 'products'];
+        $crumbs[] = ['Products', ''];
+        $actives = 'products';
+        $link = 'saleslist';
+        $hiddenSearch  = '';
+        $this->view('products/print', [
+            'rows' => $data,
+            'shop' => $shop,
+            'crumbs' => $crumbs,
+            'hiddenSearch' => $hiddenSearch,
             'actives' => $actives,
             'link' => $link
         ]);

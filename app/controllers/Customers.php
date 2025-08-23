@@ -353,7 +353,6 @@ class Customers extends Controller
         ])[0];
 
         if (count($_POST) > 0) {
-
             $custdebt->update($id, $_POST);
 
             $_SESSION['messsage'] = "Debt Updated Successfully";

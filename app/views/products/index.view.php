@@ -88,6 +88,15 @@
                                                 <i class="fa fa-plus"></i>
                                                 Add Product
                                             </a>
+                                            &nbsp;
+                                            &nbsp;
+                                            &nbsp;
+                                            <a href="<?= HOME ?>/products/print" target="_blank" class="btn btn-label-info btn-round btn-sm" id="printBtn">
+                                                <span class="btn-label">
+                                                    <i class="fa fa-print"></i>
+                                                </span>
+                                                Print
+                                            </a>
                                         <?php endif ?>
                                     </div>
                                 </div>

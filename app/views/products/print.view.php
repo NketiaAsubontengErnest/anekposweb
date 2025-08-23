@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice</title>
+    <title>Products List</title>
     <link
         rel="icon"
         href="<?= ASSETS ?>/img/kaiadmin/favicon.ico"
@@ -118,6 +118,8 @@
 <body>
 
     <div class="invoice-container">
+        <button class="print-btn" onclick="window.print()">Print</button>
+
         <!-- Invoice Header -->
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
 
@@ -135,7 +137,7 @@
 
             <!-- Shop name + Invoice on the right -->
             <div style="text-align: right;">
-                <h2 style="margin: 0;">Invoice</h2>
+                <h2 style="margin: 0;">List of Products</h2>
                 <h2 style="margin: 0;"><?= $shop->shopname ?></h2>
                 <p style="margin: 0; font-size: 12px;"><?= $shop->address ?> | <?= $shop->phone ?> | <?= $shop->email ?></p>
             </div>
@@ -145,11 +147,9 @@
         <div class="invoice-details" style="display: flex; flex-wrap: wrap; gap: 32px; margin-bottom: 20px;">
             <div style="flex: 1; min-width: 200px;">
                 <p><strong>Date:</strong> <?= date("Y-m-d") ?></p>
-                <p><strong>Order Number:</strong> <?= $sales[0]->ordernumber ?></p>
             </div>
             <div style="flex: 1; min-width: 200px;">
-                <p><strong>Customer:</strong> <?= $customer ?></p>
-                <p><strong>Attendant:</strong>
+                <p><strong>Worker:</strong>
                     <?= Auth::getFirstname() ?> <?= Auth::getLastname() ?>
                     - <b><?= Auth::getUsername() ?></b>
                 </p>
@@ -159,31 +159,27 @@
 
         <table style="border: 1px solid #ccc;">
             <tr>
+                <th style="border: 1px solid #ccc;">SN</th>
                 <th style="border: 1px solid #ccc;">Product</th>
                 <th style="text-align:center; border: 1px solid #ccc;">Quantity</th>
+                <th style="text-align:right; border: 1px solid #ccc;">Threshold</th>
+                <th style="text-align:right; border: 1px solid #ccc;">Category</th>
                 <th style="text-align:right; border: 1px solid #ccc;">Price</th>
-                <th style="text-align:right; border: 1px solid #ccc;">Total</th>
             </tr>
             <?php
-            $total = 0;
-            foreach ($sales as $sale) :
-                $subtotal = $sale->quantity * $sale->price;
-                $total += $subtotal;
-            ?>
+            $count = 0;
+            foreach ($rows as $prod) : ?>
                 <tr>
-                    <td style="border: 1px solid #ccc;"><?= $sale->product->pro_name ?></td>
-                    <td style="text-align:center; border: 1px solid #ccc;"><?= $sale->quantity ?></td>
-                    <td style="text-align:right; border: 1px solid #ccc;">GHC <?= number_format($sale->price, 2) ?></td>
-                    <td style="text-align:right; border: 1px solid #ccc;">GHC <?= number_format($subtotal, 2) ?></td>
+                    <td style="border: 1px solid #ccc; "><?= $count += 1 ?></td>
+                    <td style="border: 1px solid #ccc;"><?= $prod->pro_name ?></td>
+                    <td style="text-align:center; border: 1px solid #ccc;"><?= $prod->quantity ?></td>
+                    <td style="text-align:right; border: 1px solid #ccc;"><?= $prod->threshold ?></td>
+                    <td style="text-align:right; border: 1px solid #ccc;"><?= $prod->category->category ?></td>
+                    <td style="text-align:right; border: 1px solid #ccc;">GHC <?= number_format($prod->selling_price, 2) ?></td>
                 </tr>
             <?php endforeach; ?>
-            <tr class="total-row">
-                <td colspan="3" style="border: 1px solid #ccc;">Total</td>
-                <td style="text-align:right; border: 1px solid #ccc;">GHC <?= number_format($total, 2) ?></td>
-            </tr>
         </table>
 
-        <button class="print-btn" onclick="window.print()">Print</button>
     </div>
 
 </body>
